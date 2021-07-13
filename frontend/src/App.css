@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+.navbar-brand {
+  margin-left: 15px !important;
+}
+
+.register-form {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 13px;
+}
+
+.header {
+  margin-bottom: 5px;
+}
