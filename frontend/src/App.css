@@ -51,3 +51,11 @@
 .header {
   margin-bottom: 5px;
 }
+
+.card {
+  height: 100%;
+}
+
+img {
+  max-height: 75%;
+}

@@ -1,20 +1,36 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
+const fetch = require("node-fetch");
 
-function authToken (req, res, next) {
-    const token = req.header('auth-token');
-    if (!token) return res.sendStatus(401);
+function authToken(req, res, next) {
+  const token = req.header("auth-token");
+  if (!token) return res.sendStatus(401);
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403);
-        req.user = user;
-        next();
-    });
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
 }
 
-router.get('/anime-list', authToken, (req, res) => {
-    res.send('Working');
+router.get("/anime-list/:page", authToken, async (req, res) => {
+  try {
+    const page = req.params.page;
+    const animes = await fetch(
+      `https://api.jikan.moe/v3/top/anime/${page}/bypopularity`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+    const parsedAnimes = await animes.json();
+    res.json(parsedAnimes);
+  } catch (err) {
+    res.status(400).send({ message: "Failed to get anime list" });
+  }
 });
 
 module.exports = router;
