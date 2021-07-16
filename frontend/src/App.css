@@ -36,8 +36,36 @@
     transform: rotate(360deg);
   }
 }
+
+.animeList-container,
+.animeDetails-container,
+.loading-container {
+  min-width: 100%;
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+}
+
+.profile-container {
+  min-width: 100%;
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+  position: fixed;
+}
+
+.login-container,
+.register-container {
+  background-color: white !important;
+}
+
 .navbar-brand {
   margin-left: 15px !important;
+}
+
+.fa-arrow-left {
+  top: 73px;
+  left: 43px;
 }
 
 .register-form {

@@ -28,7 +28,6 @@ export default class AnimeList extends Component {
         hasMore: false,
       });
     }
-    console.log(this.state.hasMore);
   };
 
   getAnimes = async () => {
@@ -63,6 +62,7 @@ export default class AnimeList extends Component {
       this.setState({
         message: "Failed to load animes",
         loading: false,
+        hasMore: false,
       });
     }
   };
@@ -73,9 +73,15 @@ export default class AnimeList extends Component {
 
   render() {
     const { message, filteredAnimes, loading, hasMore } = this.state;
+    const { darkMode } = this.props;
+    console.log(darkMode);
     if (loading) {
       return (
-        <div className="container">
+        <div
+          className={
+            "container loading-container " + (darkMode ? "bg-dark" : "")
+          }
+        >
           {loading ? (
             <Loader type="Puff" color="#00BFFF" height={100} width={100} />
           ) : (
@@ -88,15 +94,19 @@ export default class AnimeList extends Component {
       filteredAnimes.forEach((anime, idx) => {
         columns.push(
           <div className="col-4 mt-4 mb-4" key={idx}>
-            <AnimeCard anime={anime} />
+            <AnimeCard darkMode={darkMode} anime={anime} />
           </div>
         );
         if ((idx + 1) % 3 === 0) {
-          columns.push(<div className="w-100"></div>);
+          columns.push(<div className="w-100" key={idx + 200}></div>);
         }
       });
       return (
-        <div className="container">
+        <div
+          className={
+            "container animeList-container " + (darkMode ? "bg-dark" : "")
+          }
+        >
           <Search
             resultsLength={filteredAnimes.length}
             handleSearch={this.handleSearch}

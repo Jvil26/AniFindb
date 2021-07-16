@@ -48,7 +48,6 @@ export default class Register extends Component {
         this.props.setUserToken(res.accessToken);
         this.setState({
           loggedIn: true,
-          message: "Logged in",
           loading: false,
         });
       }
@@ -65,7 +64,7 @@ export default class Register extends Component {
     const { username, password, email, message, loggedIn, loading } =
       this.state;
     return (
-      <div className="container">
+      <div className="container register-container">
         {loggedIn ? (
           <Redirect to={"/"} />
         ) : (

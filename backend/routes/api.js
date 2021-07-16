@@ -33,4 +33,20 @@ router.get("/anime-list/:page", authToken, async (req, res) => {
   }
 });
 
+router.get("/anime-details/:id", authToken, async (req, res) => {
+  try {
+    const animeID = req.params.id;
+    const anime = await fetch(`https://api.jikan.moe/v3/anime/${animeID}//`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+    const parsedAnime = await anime.json();
+    res.json(parsedAnime);
+  } catch (err) {
+    res.status(400).send({ message: "Failed to get anime details" });
+  }
+});
+
 module.exports = router;

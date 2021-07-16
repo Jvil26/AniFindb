@@ -6,10 +6,12 @@ import Navbar from "./Components/Navbar";
 import Profile from "./Components/Profile";
 import Register from "./Components/Register";
 import AnimeList from "./Components/AnimeList";
+import AnimeDetails from "./Components/AnimeDetails";
 
 function App() {
   const [currentUser, setUser] = useState({});
   const [userToken, setUserToken] = useState("");
+  const [darkMode, setDarkMode] = useState(false);
 
   const logOut = () => {
     setUser(null);
@@ -23,7 +25,9 @@ function App() {
           <Route
             path="/"
             exact
-            render={() => <AnimeList userToken={userToken} />}
+            render={() => (
+              <AnimeList darkMode={darkMode} userToken={userToken} />
+            )}
           ></Route>
           <Route
             path="/login"
@@ -32,12 +36,29 @@ function App() {
               <Login setUser={setUser} setUserToken={setUserToken} />
             )}
           ></Route>
-          <Route path="/profile" exact render={() => <Profile />}></Route>
+          <Route
+            path="/profile"
+            exact
+            render={() => (
+              <Profile darkMode={darkMode} setDarkMode={setDarkMode} />
+            )}
+          ></Route>
           <Route
             path="/register"
             exact
             render={() => (
               <Register setUser={setUser} setUserToken={setUserToken} />
+            )}
+          ></Route>
+          <Route
+            path="/anime-details/:id"
+            exact
+            render={(props) => (
+              <AnimeDetails
+                {...props}
+                darkMode={darkMode}
+                userToken={userToken}
+              />
             )}
           ></Route>
         </Switch>

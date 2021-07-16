@@ -11,7 +11,7 @@ export default class Search extends Component {
     return (
       <section class="intro">
         <div class="mask d-flex align-items-center h-100">
-          <div class="container">
+          <div class="container-fluid">
             <div id="accordion">
               <div class="row">
                 <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">

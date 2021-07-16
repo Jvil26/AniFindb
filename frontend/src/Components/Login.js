@@ -45,7 +45,6 @@ export default class Login extends Component {
         this.props.setUser(res.user);
         this.props.setUserToken(res.accessToken);
         this.setState({
-          message: "Logged in",
           loggedIn: true,
           loading: false,
         });
@@ -60,7 +59,7 @@ export default class Login extends Component {
   render() {
     const { username, password, message, loggedIn, loading } = this.state;
     return (
-      <div className="container">
+      <div className="container login-container">
         {loggedIn ? (
           <Redirect to={"/"} />
         ) : (
