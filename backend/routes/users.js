@@ -67,4 +67,11 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.post("/profile", async (req, res) => {
+  const user = req.body.user;
+  const newUsername = req.body.username;
+  const oldPassword = req.body.oldPassword;
+  const newPassword = req.body.newPassword;
+});
+
 module.exports = router;

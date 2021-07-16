@@ -44,6 +44,8 @@ export default class Register extends Component {
           loading: false,
         });
       } else if (status === 200) {
+        localStorage.setItem("user", res.user);
+        localStorage.setItem("accessToken", res.accessToken);
         this.props.setUser(res.user);
         this.props.setUserToken(res.accessToken);
         this.setState({
@@ -116,10 +118,10 @@ export default class Register extends Component {
               </small>
             </div>
             {message ? <p className="text-danger">{message}</p> : <div></div>}
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary mt-2">
               Register
             </button>
-            <h3>Have an account?</h3>
+            <h5 className="mt-3">Have an account?</h5>
             <Link to="/login">Log in here!</Link>
           </form>
         )}

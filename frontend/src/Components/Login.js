@@ -42,6 +42,8 @@ export default class Login extends Component {
           loading: false,
         });
       } else if (status === 200) {
+        localStorage.setItem("user", JSON.stringify(res.user));
+        localStorage.setItem("accessToken", res.accessToken);
         this.props.setUser(res.user);
         this.props.setUserToken(res.accessToken);
         this.setState({
@@ -97,8 +99,10 @@ export default class Login extends Component {
             <button type="submit" className="btn btn-primary">
               Login
             </button>
-            <h3>Don't have an account?</h3>
+            <h5 className="mt-4">Don't have an account?</h5>
             <Link to="/register">Register here!</Link>
+            <h5 className="mt-2">Forgot Password?</h5>
+            <Link to="/reset-password">Reset Password</Link>
           </form>
         )}
         {loading ? (

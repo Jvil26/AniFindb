@@ -13,7 +13,10 @@ export default class AnimeList extends Component {
     loading: false,
     page: 1,
     hasMore: true,
+    filters: { type: "", subtype: "" },
   };
+
+  setFilters = () => {};
 
   handleSearch = (e) => {
     const searchVal = e.target.value;
@@ -74,7 +77,6 @@ export default class AnimeList extends Component {
   render() {
     const { message, filteredAnimes, loading, hasMore } = this.state;
     const { darkMode } = this.props;
-    console.log(darkMode);
     if (loading) {
       return (
         <div

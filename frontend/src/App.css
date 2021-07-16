@@ -46,16 +46,20 @@
   height: 100%;
 }
 
-.profile-container {
+.profile-container,
+.resetPassword-container {
   min-width: 100%;
   width: 100%;
   min-height: 100vh;
   height: 100%;
-  position: fixed;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
 }
 
 .login-container,
-.register-container {
+.register-container,
+.resetPassword-container {
   background-color: white !important;
 }
 
