@@ -107,7 +107,7 @@ export default class Profile extends Component {
           <p></p>
           <button
             type="button"
-            class="save btn btn-lg btn-success mt-4"
+            className="save btn btn-lg btn-success mt-4"
             onClick={this.handleSave}
           >
             Save

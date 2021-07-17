@@ -38,7 +38,6 @@
 }
 
 .animeList-container,
-.animeDetails-container,
 .loading-container {
   min-width: 100%;
   width: 100%;
@@ -47,7 +46,9 @@
 }
 
 .profile-container,
-.resetPassword-container {
+.resetPassword-container,
+.home-container,
+.animeDetails-container {
   min-width: 100%;
   width: 100%;
   min-height: 100vh;
@@ -55,6 +56,10 @@
   justify-content: center;
   align-items: center;
   overflow: auto;
+}
+
+.card-details {
+  max-width: 60%;
 }
 
 .login-container,
@@ -72,6 +77,10 @@
   left: 43px;
 }
 
+.display-linebreak {
+  white-space: pre-line;
+}
+
 .register-form {
   margin-top: 20px;
 }
@@ -87,7 +96,9 @@
 .card {
   height: 100%;
 }
-
+.fa-search {
+  color: #939597;
+}
 img {
-  max-height: 75%;
+  max-height: 70%;
 }

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
 const initState = {
-  message: "",
   animeFilter: false,
   mangaFilter: false,
   charFilter: false,
+  inputVal: "",
 };
 
 export default class Search extends Component {
@@ -14,7 +14,14 @@ export default class Search extends Component {
     this.setState(initState);
   };
 
+  handleInput = (e) => {
+    this.setState({
+      inputVal: e.target.value,
+    });
+  };
+
   handleChange = (e) => {
+    e.preventDefault();
     this.setState({
       animeFilter: false,
       mangaFilter: false,
@@ -27,151 +34,160 @@ export default class Search extends Component {
 
   render() {
     const { handleSearch, resultsLength } = this.props;
-    const { message, animeFilter, mangaFilter, charFilter } = this.state;
+    const { animeFilter, mangaFilter, charFilter, inputVal } = this.state;
     return (
-      <section class="intro">
-        <div class="mask d-flex align-items-center h-100">
-          <div class="container">
+      <section className="intro">
+        <div className="mask d-flex align-items-center h-100">
+          <div className="container">
             <div id="accordion">
-              <div class="accordion-item">
-                <div class="row">
-                  <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-                    <div class="card">
-                      <div class="card-header">
-                        <div class="input-group input-group-lg">
+              <div className="accordion-item">
+                <div className="row">
+                  <div className="col-md-10 col-lg-8 col-xl-7 mx-auto">
+                    <div className="card">
+                      <div className="card-header">
+                        <div className="input-group input-group-lg">
                           <input
                             type="text"
-                            class="form-control form-control-lg rounded"
-                            placeholder="Search Animes"
-                            aria-label="Search Animes"
+                            className="form-control form-control-lg rounded"
+                            placeholder="Search"
+                            aria-label="Search"
                             aria-describedby="basic-addon2"
-                            onChange={handleSearch}
+                            value={inputVal}
+                            onChange={(e) => {
+                              handleSearch(e);
+                              this.handleInput(e);
+                            }}
                           />
-                          <span
-                            class="input-group-text border-0 accordion-header"
-                            id="headingOne"
-                            id="basic-addon2"
-                          >
+                          <span className="input-group-text border-0">
                             <i
-                              class="fas fa-filter accordion-button"
+                              class="fas fa-times"
                               type="button"
-                              data-toggle="collapse"
-                              data-target="#collapseOne"
-                              data-bs-toggle="collapse"
-                              data-bs-target="#collapseOne"
-                              aria-expanded="true"
-                              aria-controls="collapseOne"
+                              onClick={(e) => {
+                                this.setState({ inputVal: "" });
+                                handleSearch(e, null, true);
+                              }}
                             ></i>
                           </span>
                         </div>
+                        <span
+                          className="border-0 accordion-header"
+                          id="headingOne"
+                        >
+                          <i
+                            className="fas fa-filter accordion-button mt-3"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#collapseOne"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne"
+                            aria-expanded="true"
+                            aria-controls="collapseOne"
+                          ></i>
+                        </span>
                       </div>
                       <div
                         id="collapseOne"
-                        class="accordion-collapse collapse"
+                        className="accordion-collapse collapse"
                         aria-labelledby="headingOne"
                         data-bs-parent="#accordionExample"
                       >
-                        <div class="accordion-body">
-                          <div class="card-body p-4">
-                            <h6 class="text-muted text-uppercase mt-3 mb-4">
+                        <div className="accordion-body">
+                          <div className="card-body p-4">
+                            <h6 className="text-muted text-uppercase mt-3 mb-4">
                               ADVANCED SEARCH
                             </h6>
-                            <div class="row d-flex justify-content-center">
+                            <div className="row d-flex justify-content-center">
                               <div className="card-title">Types</div>
                             </div>
-                            <form
-                              className="search-form"
-                              onSubmit={(e) => this.handleSearch(e)}
-                            >
-                              <div
-                                className="form-group"
-                                controlId="filterType"
-                              >
-                                <div class="row">
-                                  <div class="col-xs-2 col-xs-offset-4 col-4">
-                                    <div class="form-check form-check-inline">
-                                      <input
-                                        class="form-check-input"
-                                        name="typeFilters"
-                                        type="radio"
-                                        id="animeFilter"
-                                        checked={animeFilter}
-                                        onChange={this.handleChange}
-                                      />
-                                      <label
-                                        class="form-check-label"
-                                        for="animeFilter"
-                                      >
-                                        Anime
-                                      </label>
-                                    </div>
-                                  </div>
-                                  <div class="col-xs-2 col-xs-offset-4 col-4">
-                                    <div class="form-check form-check-inline">
-                                      <input
-                                        class="form-check-input"
-                                        name="typeFilters"
-                                        type="radio"
-                                        id="mangaFilter"
-                                        checked={mangaFilter}
-                                        onChange={this.handleChange}
-                                      />
-                                      <label
-                                        class="form-check-label"
-                                        for="mangaFilter"
-                                      >
-                                        Manga
-                                      </label>
-                                    </div>
-                                  </div>
-                                  <div class="col-xs-2 col-xs-offset-4 col-4">
-                                    <div class="form-check form-check-inline">
-                                      <input
-                                        class="form-check-input"
-                                        name="typeFilters"
-                                        type="radio"
-                                        id="charFilter"
-                                        checked={charFilter}
-                                        onChange={this.handleChange}
-                                      />
-                                      <label
-                                        class="form-check-label"
-                                        for="charFilter"
-                                      >
-                                        Characters
-                                      </label>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-4 mb-3"></div>
-                                  <div class="col-md-4 mb-3"></div>
-                                  <div class="row">
-                                    <div class="col-md-4 mb-3"></div>
-                                    <div class="col-md-4 mb-3"></div>
+                            <div className="form-group" controlid="filterType">
+                              <div className="row">
+                                <div className="col-xs-2 col-xs-offset-4 col-4">
+                                  <div className="form-check form-check-inline">
+                                    <input
+                                      className="form-check-input"
+                                      name="typeFilters"
+                                      type="radio"
+                                      id="animeFilter"
+                                      checked={animeFilter}
+                                      onChange={this.handleChange}
+                                    />
+                                    <label
+                                      className="form-check-label"
+                                      htmlFor="animeFilter"
+                                    >
+                                      Anime
+                                    </label>
                                   </div>
                                 </div>
-                              </div>
-                              <div class="d-flex justify-content-between align-items-center mt-4">
-                                <p class="text-muted mb-0">
-                                  <span class="text-info">
-                                    {resultsLength}{" "}
-                                  </span>
-                                  results
-                                </p>
-                                <div>
-                                  <button
-                                    type="button"
-                                    class="btn btn-link text-body"
-                                    data-mdb-ripple-color="dark"
-                                    onClick={this.handleReset}
-                                  >
-                                    Reset
-                                  </button>
-                                  <button type="submit" class="btn btn-info">
-                                    Search
-                                  </button>
+                                <div className="col-xs-2 col-xs-offset-4 col-4">
+                                  <div className="form-check form-check-inline">
+                                    <input
+                                      className="form-check-input"
+                                      name="typeFilters"
+                                      type="radio"
+                                      id="mangaFilter"
+                                      checked={mangaFilter}
+                                      onChange={this.handleChange}
+                                    />
+                                    <label
+                                      className="form-check-label"
+                                      htmlFor="mangaFilter"
+                                    >
+                                      Manga
+                                    </label>
+                                  </div>
+                                </div>
+                                <div className="col-xs-2 col-xs-offset-4 col-4">
+                                  <div className="form-check form-check-inline">
+                                    <input
+                                      className="form-check-input"
+                                      name="typeFilters"
+                                      type="radio"
+                                      id="charFilter"
+                                      checked={charFilter}
+                                      onChange={this.handleChange}
+                                    />
+                                    <label
+                                      className="form-check-label"
+                                      htmlFor="charFilter"
+                                    >
+                                      Characters
+                                    </label>
+                                  </div>
+                                </div>
+                                <div className="col-md-4 mb-3"></div>
+                                <div className="col-md-4 mb-3"></div>
+                                <div className="row">
+                                  <div className="col-md-4 mb-3"></div>
+                                  <div className="col-md-4 mb-3"></div>
                                 </div>
                               </div>
-                            </form>
+                            </div>
+                            <div className="d-flex justify-content-between align-items-center mt-4">
+                              <p className="text-muted mb-0">
+                                <span className="text-info">
+                                  {resultsLength}{" "}
+                                </span>
+                                results
+                              </p>
+                              <div>
+                                <button
+                                  type="button"
+                                  className="btn btn-link text-body"
+                                  data-mdb-ripple-color="dark"
+                                  onClick={this.handleReset}
+                                >
+                                  Reset
+                                </button>
+                                <button
+                                  type="button"
+                                  className="btn btn-info"
+                                  onClick={(e) => handleSearch(e, this.state)}
+                                >
+                                  Search
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>

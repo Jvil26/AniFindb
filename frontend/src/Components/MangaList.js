@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import Loader from "react-loader-spinner";
 import Search from "./Search";
-import AnimeCard from "./AnimeCard";
+import MangaCard from "./MangaCard";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "../App.css";
 
-export default class AnimeList extends Component {
+export default class MangaList extends Component {
   state = {
     message: "",
-    animes: [],
-    filteredAnimes: [],
+    mangas: [],
+    filteredMangas: [],
     loading: false,
     page: 1,
     hasMore: true,
-    currentFilter: "anime",
+    currentFilter: "manga",
   };
 
   handleSearch = (e, searchState, reset) => {
@@ -23,8 +23,8 @@ export default class AnimeList extends Component {
       searchVal = e.target.value;
     }
     this.setState({
-      filteredAnimes: this.state.animes.filter((anime) =>
-        anime.title.toLowerCase().includes(searchVal)
+      filteredMangas: this.state.mangas.filter((manga) =>
+        manga.title.toLowerCase().includes(searchVal)
       ),
       hasMore: true,
     });
@@ -35,21 +35,15 @@ export default class AnimeList extends Component {
     }
   };
 
-  getAnimes = async (filterType) => {
+  getMangas = async (filterType) => {
     try {
       this.setState({
         loading: true,
       });
-      let type = "";
-      if (filterType) {
-        type = filterType;
-      } else {
-        type = "anime";
-      }
       const page = this.state.page;
       const subtype = "bypopularity";
       const res = await fetch(
-        `http://localhost:5000/api/anime-list?subtype=${subtype}&page=${page}`,
+        `http://localhost:5000/api/manga-list?subtype=${subtype}&page=${page}`,
         {
           method: "GET",
           headers: {
@@ -58,7 +52,7 @@ export default class AnimeList extends Component {
           },
         }
       );
-      const animes = await res.json();
+      const mangas = await res.json();
       if (res.status !== 200) {
         this.setState({
           message: res.message,
@@ -66,16 +60,16 @@ export default class AnimeList extends Component {
         });
       } else if (res.status === 200) {
         this.setState({
-          animes: [...this.state.filteredAnimes, ...animes.top],
-          filteredAnimes: [...this.state.filteredAnimes, ...animes.top],
+          mangas: [...this.state.filteredMangas, ...mangas.top],
+          filteredMangas: [...this.state.filteredMangas, ...mangas.top],
           loading: false,
           page: this.state.page + 1,
         });
       }
-      console.log(this.state.filteredAnimes);
+      console.log(this.state.filteredMangas);
     } catch (err) {
       this.setState({
-        message: "Failed to load animes",
+        message: "Failed to load mangas",
         loading: false,
         hasMore: false,
       });
@@ -83,11 +77,11 @@ export default class AnimeList extends Component {
   };
 
   componentDidMount = () => {
-    this.getAnimes();
+    this.getMangas();
   };
 
   render() {
-    const { message, filteredAnimes, loading, hasMore } = this.state;
+    const { message, filteredMangas, loading, hasMore } = this.state;
     const { darkMode } = this.props;
     if (loading) {
       return (
@@ -105,10 +99,10 @@ export default class AnimeList extends Component {
       );
     } else {
       let columns = [];
-      filteredAnimes.forEach((anime, idx) => {
+      filteredMangas.forEach((manga, idx) => {
         columns.push(
           <div className="col-4 mt-4 mb-4" key={idx}>
-            <AnimeCard darkMode={darkMode} anime={anime} />
+            <MangaCard darkMode={darkMode} manga={manga} />
           </div>
         );
         if ((idx + 1) % 3 === 0) {
@@ -122,7 +116,7 @@ export default class AnimeList extends Component {
           }
         >
           <Search
-            resultsLength={filteredAnimes.length}
+            resultsLength={filteredMangas.length}
             handleSearch={this.handleSearch}
           />
           {message ? (
@@ -132,7 +126,7 @@ export default class AnimeList extends Component {
           )}
           <InfiniteScroll
             className="container mt-5"
-            dataLength={filteredAnimes.length}
+            dataLength={filteredMangas.length}
             hasMore={hasMore}
           >
             {<div className="row">{columns}</div>}
@@ -141,9 +135,9 @@ export default class AnimeList extends Component {
             <button
               type="button"
               className="btn btn-secondary mb-4 mt-4"
-              onClick={this.getAnimes}
+              onClick={this.getMangas}
             >
-              Load More Animes
+              Load More Mangas
             </button>
           ) : (
             <div></div>

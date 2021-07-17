@@ -2,20 +2,20 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "../App.css";
 
-export default class AnimeCard extends Component {
+export default class CharCard extends Component {
   render() {
-    const { anime, darkMode } = this.props;
+    const { character, darkMode } = this.props;
     return (
       <div className={"card " + (darkMode ? "bg-secondary" : "")}>
         <img
-          src={anime.image_url}
+          src={character.image_url}
           className="card-img-top rounded"
-          alt="Anime"
+          alt="char"
         />
         <div className={"card-body " + (darkMode ? "text-white" : "")}>
-          <h5 className="card-title">{anime.title}</h5>
-          <p className="card-text">Episodes: {anime.episodes}</p>
-          <Link to={"/anime-details/" + anime.mal_id}>
+          <h5 className="card-title">{character.title}</h5>
+          <p className="card-text">{character.name_kanji}</p>
+          <Link to={"/character-details/" + character.mal_id}>
             <button type="button" className="btn btn-primary">
               Learn More
             </button>

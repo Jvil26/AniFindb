@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Loader from "react-loader-spinner";
 
 import Login from "./Components/Login";
@@ -9,6 +9,11 @@ import Register from "./Components/Register";
 import AnimeList from "./Components/AnimeList";
 import AnimeDetails from "./Components/AnimeDetails";
 import ResetPassword from "./Components/Reset-Password";
+import MangaList from "./Components/MangaList";
+import MangaDetails from "./Components/MangaDetails";
+import CharList from "./Components/CharList";
+import CharDetails from "./Components/CharDetails";
+import Home from "./Components/Home";
 
 function App() {
   const [currentUser, setUser] = useState({});
@@ -44,8 +49,27 @@ function App() {
             <Route
               path="/"
               exact
+              render={() => <Home darkMode={darkMode} userToken={userToken} />}
+            ></Route>
+            <Route
+              path="/anime-list"
+              exact
               render={() => (
                 <AnimeList darkMode={darkMode} userToken={userToken} />
+              )}
+            ></Route>
+            <Route
+              path="/manga-list"
+              exact
+              render={() => (
+                <MangaList darkMode={darkMode} userToken={userToken} />
+              )}
+            ></Route>
+            <Route
+              path="/character-list"
+              exact
+              render={() => (
+                <CharList darkMode={darkMode} userToken={userToken} />
               )}
             ></Route>
             <Route
@@ -78,6 +102,28 @@ function App() {
               exact
               render={(props) => (
                 <AnimeDetails
+                  {...props}
+                  darkMode={darkMode}
+                  userToken={userToken}
+                />
+              )}
+            ></Route>
+            <Route
+              path="/manga-details/:id"
+              exact
+              render={(props) => (
+                <MangaDetails
+                  {...props}
+                  darkMode={darkMode}
+                  userToken={userToken}
+                />
+              )}
+            ></Route>
+            <Route
+              path="/character-details/:id"
+              exact
+              render={(props) => (
+                <CharDetails
                   {...props}
                   darkMode={darkMode}
                   userToken={userToken}

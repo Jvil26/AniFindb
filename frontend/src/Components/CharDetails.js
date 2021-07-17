@@ -3,27 +3,30 @@ import Loader from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import "../App.css";
 
-export default class AnimeDetails extends Component {
+export default class CharDetails extends Component {
   state = {
     message: "",
-    loading: false,
-    anime: {},
+    loading: true,
+    character: {},
   };
 
-  getAnimeDetails = async () => {
+  getCharDetails = async () => {
     try {
       this.setState({
         loading: true,
       });
       const { id } = this.props.match.params;
-      const res = await fetch(`http://localhost:5000/api/anime-details/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-          "auth-token": this.props.userToken,
-        },
-      });
-      const anime = await res.json();
+      const res = await fetch(
+        `http://localhost:5000/api/character-details/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            "auth-token": this.props.userToken,
+          },
+        }
+      );
+      const character = await res.json();
       if (res.status !== 200) {
         this.setState({
           loading: false,
@@ -32,23 +35,23 @@ export default class AnimeDetails extends Component {
       } else if (res.status === 200) {
         this.setState({
           loading: false,
-          anime: anime,
+          character: character,
         });
       }
     } catch (err) {
       this.setState({
-        message: "Failed to get anime details",
+        message: "Failed to get chararacter details",
         loading: false,
       });
     }
   };
 
   componentDidMount = () => {
-    this.getAnimeDetails();
+    this.getCharDetails();
   };
 
   render() {
-    const { loading, message, anime } = this.state;
+    const { loading, message, character } = this.state;
     const { darkMode } = this.props;
     return (
       <div
@@ -56,8 +59,13 @@ export default class AnimeDetails extends Component {
           "container animeDetails-container " + (darkMode ? "bg-dark" : "")
         }
       >
-        <Link to="/anime-list" exact>
-          <i className="fas fa-arrow-left fa-3x position-absolute text-dark"></i>
+        <Link to="/character-list" exact>
+          <i
+            className={
+              "fas fa-arrow-left fa-3x position-absolute " +
+              (darkMode ? "text-light" : "text-dark")
+            }
+          ></i>
         </Link>
         {message ? <p className="text-danger mt-5">{message}</p> : <div></div>}
         {loading ? (
@@ -66,19 +74,17 @@ export default class AnimeDetails extends Component {
           <div>
             <div className="card card-details mx-auto mb-5 mt-5">
               <div className="card-body">
-                <h5 className="card-title">Title: {anime.title}</h5>
+                <h4 className="card-title">Name: {character.name}</h4>
                 <h5 className="card-title">
-                  English Title: {anime.title_english}
+                  Kanji Name: {character.name_kanji}
                 </h5>
-                <p className="card-text">{anime.synopsis}</p>
-              </div>
-              <div className="embed-responsive embed-responsive-16by9">
-                <iframe
-                  title="animeTrailer"
-                  className="embed-responsive-item"
-                  src={anime.trailer_url}
-                  allowFullScreen
-                ></iframe>
+                <h6 className="card-title mt-3">About: </h6>
+                <p className="display-linebreak">{character.about}</p>
+                <img
+                  className="mt-4"
+                  src={character.image_url}
+                  alt="MangaImage"
+                ></img>
               </div>
             </div>
           </div>

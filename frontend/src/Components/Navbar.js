@@ -10,7 +10,7 @@ export default class Navbar extends Component {
           <div>
             <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
               <Link exact to="/" className="navbar-brand">
-                Anime
+                Home
               </Link>
               <button
                 className="navbar-toggler"
@@ -29,8 +29,18 @@ export default class Navbar extends Component {
               >
                 <ul className="navbar-nav mr-auto">
                   <li className="navbar-item">
-                    <NavLink exact to="/" className="nav-link">
-                      Animes List
+                    <NavLink exact to="/anime-list" className="nav-link">
+                      Animes
+                    </NavLink>
+                  </li>
+                  <li className="navbar-item">
+                    <NavLink exact to="/manga-list" className="nav-link">
+                      Mangas
+                    </NavLink>
+                  </li>
+                  <li className="navbar-item">
+                    <NavLink exact to="/character-list" className="nav-link">
+                      Characters
                     </NavLink>
                   </li>
                   <li className="navbar-item">
@@ -74,8 +84,18 @@ export default class Navbar extends Component {
             >
               <ul className="navbar-nav mr-auto">
                 <li className="navbar-item">
-                  <NavLink exact to="/" className="nav-link">
-                    Anime List
+                  <NavLink exact to="/anime-list" className="nav-link">
+                    Animes
+                  </NavLink>
+                </li>
+                <li className="navbar-item">
+                  <NavLink exact to="/manga-list" className="nav-link">
+                    Mangas
+                  </NavLink>
+                </li>
+                <li className="navbar-item">
+                  <NavLink exact to="/character-list" className="nav-link">
+                    Characters
                   </NavLink>
                 </li>
                 <li className="navbar-item">
