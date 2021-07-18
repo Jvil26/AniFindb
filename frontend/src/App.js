@@ -49,7 +49,9 @@ function App() {
             <Route
               path="/"
               exact
-              render={() => <Home darkMode={darkMode} userToken={userToken} />}
+              render={() => (
+                <Home darkMode={darkMode} currentUser={currentUser} />
+              )}
             ></Route>
             <Route
               path="/anime-list"
@@ -85,7 +87,7 @@ function App() {
               render={() => (
                 <Profile
                   darkMode={darkMode}
-                  currentUser={JSON.parse(currentUser)}
+                  currentUser={currentUser}
                   setDarkMode={setDarkMode}
                 />
               )}

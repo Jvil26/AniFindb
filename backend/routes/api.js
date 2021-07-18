@@ -35,6 +35,25 @@ router.get("/anime-list", authToken, async (req, res) => {
   }
 });
 
+router.get("/anime-list/search", authToken, async (req, res) => {
+  try {
+    const animeTitle = req.query.title;
+    const anime = await fetch(
+      `https://api.jikan.moe/v3/search/anime?q=${animeTitle}&page=1`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+    const parsedAnime = await anime.json();
+    res.json(parsedAnime);
+  } catch (err) {
+    res.status(400).send({ message: "Failed to get anime" });
+  }
+});
+
 router.get("/anime-details/:id", authToken, async (req, res) => {
   try {
     const animeID = req.params.id;
@@ -71,6 +90,25 @@ router.get("/manga-list", authToken, async (req, res) => {
   }
 });
 
+router.get("/manga-list/search", authToken, async (req, res) => {
+  try {
+    const mangaTitle = req.query.title;
+    const manga = await fetch(
+      `https://api.jikan.moe/v3/search/manga?q=${mangaTitle}&page=1`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+    const parsedManga = await manga.json();
+    res.json(parsedManga);
+  } catch (err) {
+    res.status(400).send({ message: "Failed to get anime" });
+  }
+});
+
 router.get("/manga-details/:id", authToken, async (req, res) => {
   try {
     const mangaID = req.params.id;
@@ -103,6 +141,25 @@ router.get("/character-list", authToken, async (req, res) => {
     res.json(parsedCharacters);
   } catch (err) {
     res.status(400).send({ message: "Failed to get character list" });
+  }
+});
+
+router.get("/character-list/search", authToken, async (req, res) => {
+  try {
+    const charTitle = req.query.title;
+    const char = await fetch(
+      `https://api.jikan.moe/v3/search/character?q=${charTitle}&page=1`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+    const parsedCharacter = await char.json();
+    res.json(parsedCharacter);
+  } catch (err) {
+    res.status(400).send({ message: "Failed to get anime" });
   }
 });
 

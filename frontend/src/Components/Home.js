@@ -1,15 +1,20 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import AuthError from "./AuthError";
 import "../App.css";
 
-export default class Home extends Component {
-  render() {
-    const { darkMode } = this.props;
-    return (
-      <div
-        className={"container home-container " + (darkMode ? "bg-dark" : "")}
-      >
-        <p>Home</p>
-      </div>
-    );
-  }
+export default function Home(props) {
+  const { currentUser, darkMode } = props;
+  return (
+    <div>
+      {currentUser ? (
+        <div
+          className={"container home-container " + (darkMode ? "bg-dark" : "")}
+        >
+          <p>Home</p>
+        </div>
+      ) : (
+        <AuthError />
+      )}
+    </div>
+  );
 }

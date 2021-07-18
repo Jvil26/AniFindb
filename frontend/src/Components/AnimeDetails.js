@@ -1,89 +1,100 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import Loader from "react-loader-spinner";
 import { Link } from "react-router-dom";
+import AuthError from "./AuthError";
 import "../App.css";
 
-export default class AnimeDetails extends Component {
-  state = {
+export default function AnimeDetails(props) {
+  const [state, setState] = useState({
     message: "",
     loading: false,
     anime: {},
-  };
+  });
 
-  getAnimeDetails = async () => {
+  const getAnimeDetails = async () => {
     try {
-      this.setState({
+      setState({
+        ...state,
         loading: true,
       });
-      const { id } = this.props.match.params;
+      const { id } = props.match.params;
       const res = await fetch(`http://localhost:5000/api/anime-details/${id}`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
-          "auth-token": this.props.userToken,
+          "auth-token": props.userToken,
         },
       });
       const anime = await res.json();
       if (res.status !== 200) {
-        this.setState({
+        setState({
           loading: false,
           message: res.message,
         });
       } else if (res.status === 200) {
-        this.setState({
+        setState({
+          ...state,
           loading: false,
           anime: anime,
         });
       }
     } catch (err) {
-      this.setState({
+      setState({
         message: "Failed to get anime details",
         loading: false,
       });
     }
   };
 
-  componentDidMount = () => {
-    this.getAnimeDetails();
-  };
+  useEffect(() => {
+    getAnimeDetails();
+  }, []);
 
-  render() {
-    const { loading, message, anime } = this.state;
-    const { darkMode } = this.props;
-    return (
-      <div
-        className={
-          "container animeDetails-container " + (darkMode ? "bg-dark" : "")
-        }
-      >
-        <Link to="/anime-list" exact>
-          <i className="fas fa-arrow-left fa-3x position-absolute text-dark"></i>
-        </Link>
-        {message ? <p className="text-danger mt-5">{message}</p> : <div></div>}
-        {loading ? (
-          <Loader type="Puff" color="#00BFFF" height={100} width={100} />
-        ) : (
-          <div>
-            <div className="card card-details mx-auto mb-5 mt-5">
-              <div className="card-body">
-                <h5 className="card-title">Title: {anime.title}</h5>
-                <h5 className="card-title">
-                  English Title: {anime.title_english}
-                </h5>
-                <p className="card-text">{anime.synopsis}</p>
-              </div>
-              <div className="embed-responsive embed-responsive-16by9">
-                <iframe
-                  title="animeTrailer"
-                  className="embed-responsive-item"
-                  src={anime.trailer_url}
-                  allowFullScreen
-                ></iframe>
+  const { loading, message, anime } = state;
+  const { darkMode, userToken } = props;
+  return (
+    <div>
+      {userToken ? (
+        <div
+          className={
+            "container animeDetails-container " + (darkMode ? "bg-dark" : "")
+          }
+        >
+          <Link to="/anime-list" exact>
+            <i className="fas fa-arrow-left fa-3x position-absolute text-dark"></i>
+          </Link>
+          {message ? (
+            <p className="text-danger mt-5">{message}</p>
+          ) : (
+            <div></div>
+          )}
+          {loading ? (
+            <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+          ) : (
+            <div>
+              <div className="card card-details mx-auto mb-5 mt-5">
+                <div className="card-body">
+                  <h5 className="card-title">Title: {anime.title}</h5>
+                  <h5 className="card-title">
+                    English Title: {anime.title_english}
+                  </h5>
+                  <p className="card-text">{anime.synopsis}</p>
+                </div>
+                <div className="embed-responsive embed-responsive-16by9">
+                  <iframe
+                    title="animeTrailer"
+                    className="embed-responsive-item"
+                    src={anime.trailer_url}
+                    allowFullScreen
+                  ></iframe>
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </div>
-    );
-  }
+          )}
+        </div>
+      ) : (
+        <AuthError />
+      )}
+    </div>
+  );
 }
