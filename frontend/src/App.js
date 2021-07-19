@@ -87,7 +87,7 @@ function App() {
               render={() => (
                 <Profile
                   darkMode={darkMode}
-                  currentUser={currentUser}
+                  currentUser={JSON.parse(currentUser)}
                   setDarkMode={setDarkMode}
                 />
               )}
@@ -100,7 +100,7 @@ function App() {
               )}
             ></Route>
             <Route
-              path="/anime-details/:id"
+              path="/anime-details/:id/:title"
               exact
               render={(props) => (
                 <AnimeDetails
@@ -111,7 +111,7 @@ function App() {
               )}
             ></Route>
             <Route
-              path="/manga-details/:id"
+              path="/manga-details/:id/:title"
               exact
               render={(props) => (
                 <MangaDetails
@@ -122,7 +122,7 @@ function App() {
               )}
             ></Route>
             <Route
-              path="/character-details/:id"
+              path="/character-details/:id/:title"
               exact
               render={(props) => (
                 <CharDetails

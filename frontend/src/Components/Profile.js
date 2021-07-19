@@ -33,7 +33,8 @@ export default function Profile(props) {
       {currentUser ? (
         <div
           className={
-            "container profile-container " + (darkMode ? "bg-dark" : "")
+            "container profile-container " +
+            (darkMode ? "darkBG text-white" : "")
           }
         >
           <div className="custom-control custom-switch mt-5 mb-5">
@@ -45,12 +46,10 @@ export default function Profile(props) {
               onChange={handleToggle}
             />
             <label className="custom-control-label" htmlFor="customSwitches">
-              <span className={darkMode ? "text-white" : ""}>Dark Mode</span>
+              <span>Dark Mode</span>
             </label>
           </div>
-          <p className={darkMode ? "text-light" : "text-dark"}>
-            Username: {currentUser.username}
-          </p>
+          <p>Username: {currentUser.username}</p>
           <form className="edit-profile-form" onSubmit={(e) => handleSave(e)}>
             <div className="form-group row d-flex justify-content-center mt-5">
               <div className="col-6">
@@ -59,55 +58,18 @@ export default function Profile(props) {
                     "header " + (darkMode ? "text-light" : "text-dark")
                   }
                 >
-                  New Username
+                  New Username:
                 </label>
                 <input
                   type="text"
                   value={username}
                   name="username"
-                  className="form-control"
+                  className={
+                    "form-control mt-2 " +
+                    (darkMode ? "bg-dark text-light" : "")
+                  }
                   id="username"
                   placeholder="New Username"
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div className="form-group row d-flex justify-content-center mt-5">
-              <div className="col-6">
-                <label
-                  className={
-                    "header " + (darkMode ? "text-light" : "text-dark")
-                  }
-                >
-                  Current Password
-                </label>
-                <input
-                  type="password"
-                  value={oldPassword}
-                  name="oldPassword"
-                  className="form-control"
-                  id="oldPassword"
-                  placeholder="Current Password"
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div className="form-group row d-flex justify-content-center mt-4">
-              <div className="col-6">
-                <label
-                  className={
-                    "header " + (darkMode ? "text-light" : "text-dark")
-                  }
-                >
-                  New Password
-                </label>
-                <input
-                  type="password"
-                  value={newPassword}
-                  name="newPassword"
-                  className="form-control"
-                  id="newPassword"
-                  placeholder="New Password"
                   onChange={handleChange}
                 />
               </div>

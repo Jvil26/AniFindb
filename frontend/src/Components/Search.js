@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../App.css";
 
 const initState = {
   animeFilter: false,
@@ -29,7 +30,7 @@ export default function Search(props) {
     });
   };
 
-  const { handleSearch, resultsLength } = props;
+  const { darkMode, handleSearch, resultsLength } = props;
   const { animeFilter, mangaFilter, charFilter, inputVal } = state;
   return (
     <section className="intro">
@@ -39,7 +40,9 @@ export default function Search(props) {
             <div className="accordion-item">
               <div className="row">
                 <div className="col-md-10 col-lg-8 col-xl-7 mx-auto">
-                  <div className="card">
+                  <div
+                    className={"card " + (darkMode ? "dark2BG text-white" : "")}
+                  >
                     <div className="card-header">
                       <div className="input-group input-group-lg">
                         <input
@@ -54,7 +57,7 @@ export default function Search(props) {
                         />
                         <span className="input-group-text border-0">
                           <i
-                            className="fas fa-search"
+                            className={"fas fa-search"}
                             type="button"
                             onClick={(e) => {
                               handleSearch(e, inputVal);
@@ -157,8 +160,16 @@ export default function Search(props) {
                             </div>
                           </div>
                           <div className="d-flex justify-content-between align-items-center mt-4">
-                            <p className="text-muted mb-0">
-                              <span className="text-info">
+                            <p
+                              className={
+                                "mb-0 " + (!darkMode ? "text-muted" : "")
+                              }
+                            >
+                              <span
+                                className={
+                                  "text-info " + (darkMode ? "text-white" : "")
+                                }
+                              >
                                 {resultsLength}{" "}
                               </span>
                               results
@@ -170,7 +181,9 @@ export default function Search(props) {
                                 data-mdb-ripple-color="dark"
                                 onClick={handleReset}
                               >
-                                Reset
+                                <span className={darkMode ? "text-white" : ""}>
+                                  Reset
+                                </span>
                               </button>
                               <button
                                 type="button"

@@ -58,7 +58,7 @@ export default function CharDetails(props) {
       {userToken ? (
         <div
           className={
-            "container animeDetails-container " + (darkMode ? "bg-dark" : "")
+            "container animeDetails-container " + (darkMode ? "darkBG" : "")
           }
         >
           <Link to="/character-list" exact>
@@ -78,7 +78,12 @@ export default function CharDetails(props) {
             <Loader type="Puff" color="#00BFFF" height={100} width={100} />
           ) : (
             <div>
-              <div className="card card-details mx-auto mb-5 mt-5">
+              <div
+                className={
+                  "card card-details mx-auto mb-5 mt-5 " +
+                  (darkMode ? "dark2BG text-white" : "")
+                }
+              >
                 <div className="card-body">
                   <h4 className="card-title">Name: {character.name}</h4>
                   <h5 className="card-title">

@@ -68,6 +68,37 @@
   background-color: white !important;
 }
 
+.carousel-item > img {
+  width: auto;
+  height: 93vh;
+  max-height: 100%;
+  filter: brightness(40%);
+}
+
+.carousel-caption {
+  position: absolute;
+  top: 30%;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  height: 100%;
+}
+
+.darkBG {
+  background: rgb(24, 24, 24);
+}
+
+.dark2BG {
+  background: rgb(61, 61, 61);
+}
+
 .navbar-brand {
   margin-left: 15px !important;
 }

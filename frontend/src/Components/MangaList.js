@@ -114,7 +114,7 @@ export default function MangaList(props) {
   if (state.loading) {
     return (
       <div
-        className={"container loading-container " + (darkMode ? "bg-dark" : "")}
+        className={"container loading-container " + (darkMode ? "darkBG" : "")}
       >
         {state.loading ? (
           <Loader type="Puff" color="#00BFFF" height={100} width={100} />
@@ -140,12 +140,13 @@ export default function MangaList(props) {
     return (
       <div
         className={
-          "container animeList-container " + (darkMode ? "bg-dark" : "")
+          "container animeList-container " + (darkMode ? "darkBG" : "")
         }
       >
         <Search
           resultsLength={state.filteredMangas.length}
           handleSearch={handleSearch}
+          darkMode={darkMode}
         />
         {state.message ? (
           <p className="text-danger mt-5">{state.message}</p>

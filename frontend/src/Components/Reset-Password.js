@@ -10,6 +10,8 @@ export default function ResetPassword() {
     message: "",
     loading: false,
     confirmedEmail: false,
+    oldPassword: "",
+    newPassword: "",
   });
 
   const handleChange = (e) => {
@@ -27,13 +29,21 @@ export default function ResetPassword() {
         loading: true,
       });
     } catch (err) {
-      this.setState({
+      setState({
         message: "Error logging in. Try again later.",
         loading: false,
       });
     }
   };
-  const { email, resetPassword, message, confirmedEmail, loading } = state;
+  const {
+    email,
+    resetPassword,
+    message,
+    confirmedEmail,
+    loading,
+    oldPassword,
+    newPassword,
+  } = state;
   return (
     <div className="container resetPassword-container">
       {confirmedEmail ? (
@@ -53,6 +63,34 @@ export default function ResetPassword() {
                 placeholder="Enter Confirmation Email"
                 onChange={handleChange}
               />
+            </div>
+            <div className="form-group row d-flex justify-content-center mt-5">
+              <div className="col-6">
+                <label>Current Password</label>
+                <input
+                  type="password"
+                  value={oldPassword}
+                  name="oldPassword"
+                  className="form-control"
+                  id="oldPassword"
+                  placeholder="Current Password"
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div className="form-group row d-flex justify-content-center mt-4">
+              <div className="col-6">
+                <label>New Password</label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  name="newPassword"
+                  className="form-control"
+                  id="newPassword"
+                  placeholder="New Password"
+                  onChange={handleChange}
+                />
+              </div>
             </div>
           </div>
           {message ? <p className="text-danger">{message}</p> : <div></div>}
