@@ -27,7 +27,8 @@ export default function Register(props) {
       setState({
         loading: true,
       });
-      const data = await fetch("http://localhost:5000/users/register", {
+      console.log(state);
+      const res = await fetch("http://localhost:5000/users/register", {
         method: "POST",
         body: JSON.stringify({
           username: state.username,
@@ -38,18 +39,19 @@ export default function Register(props) {
           "Content-type": "application/json",
         },
       });
-      const { status } = data;
-      const res = await data.json();
+      const { status } = res;
+      const data = await res.json();
       if (status !== 200) {
         setState({
-          message: res.message,
+          ...state,
+          message: data.message,
           loading: false,
         });
       } else if (status === 200) {
-        localStorage.setItem("user", res.user);
-        localStorage.setItem("accessToken", res.accessToken);
-        props.setUser(res.user);
-        props.setUserToken(res.accessToken);
+        localStorage.setItem("user", data.user);
+        localStorage.setItem("accessToken", data.accessToken);
+        props.setUser(data.user);
+        props.setUserToken(data.accessToken);
         setState({
           loggedIn: true,
           loading: false,
@@ -57,6 +59,7 @@ export default function Register(props) {
       }
     } catch (err) {
       setState({
+        ...state,
         message: "Error in registering. Try again later.",
         loading: false,
       });

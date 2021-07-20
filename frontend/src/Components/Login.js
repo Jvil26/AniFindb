@@ -39,7 +39,8 @@ export default function Login(props) {
       const data = await res.json();
       if (res.status !== 200) {
         setState({
-          message: res.message,
+          ...state,
+          message: data.message,
           loading: false,
         });
       } else if (res.status === 200) {
@@ -48,12 +49,14 @@ export default function Login(props) {
         props.setUser(data.user);
         props.setUserToken(data.accessToken);
         setState({
+          ...state,
           loggedIn: true,
           loading: false,
         });
       }
     } catch (err) {
       setState({
+        ...state,
         message: "Error logging in. Try again later.",
         loading: false,
       });

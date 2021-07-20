@@ -39,7 +39,7 @@ export default function MangaList(props) {
       const data = await res.json();
       if (res.status !== 200) {
         setState({
-          message: res.message,
+          message: data.message,
           loading: false,
         });
       } else if (res.status === 200) {
@@ -110,11 +110,11 @@ export default function MangaList(props) {
     getMangas();
   }, []);
 
-  const { darkMode, userToken } = props;
+  const { dark_mode, userToken } = props;
   if (state.loading) {
     return (
       <div
-        className={"container loading-container " + (darkMode ? "darkBG" : "")}
+        className={"container loading-container " + (dark_mode ? "darkBG" : "")}
       >
         {state.loading ? (
           <Loader type="Puff" color="#00BFFF" height={100} width={100} />
@@ -130,7 +130,7 @@ export default function MangaList(props) {
     state.filteredMangas.forEach((manga, idx) => {
       columns.push(
         <div className="col-4 mt-4 mb-4" key={idx}>
-          <Card darkMode={darkMode} manga={manga} />
+          <Card dark_mode={dark_mode} manga={manga} />
         </div>
       );
       if ((idx + 1) % 3 === 0) {
@@ -140,13 +140,13 @@ export default function MangaList(props) {
     return (
       <div
         className={
-          "container animeList-container " + (darkMode ? "darkBG" : "")
+          "container animeList-container " + (dark_mode ? "darkBG" : "")
         }
       >
         <Search
           resultsLength={state.filteredMangas.length}
           handleSearch={handleSearch}
-          darkMode={darkMode}
+          dark_mode={dark_mode}
         />
         {state.message ? (
           <p className="text-danger mt-5">{state.message}</p>

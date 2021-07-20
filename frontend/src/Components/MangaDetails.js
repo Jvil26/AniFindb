@@ -29,7 +29,7 @@ export default function MangaDetails(props) {
       if (res.status !== 200) {
         setState({
           loading: false,
-          message: res.message,
+          message: manga.message,
         });
       } else if (res.status === 200) {
         setState({
@@ -51,17 +51,22 @@ export default function MangaDetails(props) {
   }, []);
 
   const { loading, message, manga } = state;
-  const { darkMode, userToken } = props;
+  const { dark_mode, userToken } = props;
   return (
     <div>
       {userToken ? (
         <div
           className={
-            "container animeList-container " + (darkMode ? "darkBG" : "")
+            "container animeDetails-container " + (dark_mode ? "darkBG" : "")
           }
         >
           <Link to="/manga-list" exact>
-            <i className="fas fa-arrow-left fa-3x position-absolute text-dark"></i>
+            <i
+              className={
+                "fas fa-arrow-left fa-3x position-absolute " +
+                (dark_mode ? "text-light" : "text-dark")
+              }
+            ></i>
           </Link>
           {message ? (
             <p className="text-danger mt-5">{message}</p>
@@ -75,7 +80,7 @@ export default function MangaDetails(props) {
               <div
                 className={
                   "card card-details mx-auto mb-5 mt-5 " +
-                  (darkMode ? "dark2BG text-white" : "")
+                  (dark_mode ? "dark2BG text-white" : "")
                 }
               >
                 <div className="card-body">

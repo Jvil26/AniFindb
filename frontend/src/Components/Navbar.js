@@ -9,7 +9,7 @@ export default function Navbar(props) {
         <div>
           <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
             <Link exact to="/" className="navbar-brand">
-              <img src="favicon.ico" width="50" height="50" alt="Home Icon" />
+              <img src="logo192.png" width="50" height="50" alt="Home Icon" />
             </Link>
             <button
               className="navbar-toggler"

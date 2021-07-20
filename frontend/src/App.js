@@ -18,7 +18,6 @@ import Home from "./Components/Home";
 function App() {
   const [currentUser, setUser] = useState({});
   const [userToken, setUserToken] = useState("");
-  const [darkMode, setDarkMode] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const logOut = () => {
@@ -36,7 +35,7 @@ function App() {
       setUserToken(accessToken);
     }
     setLoading(false);
-  }, [currentUser, userToken]);
+  }, []);
 
   return (
     <div className="App">
@@ -49,29 +48,49 @@ function App() {
             <Route
               path="/"
               exact
-              render={() => (
-                <Home darkMode={darkMode} currentUser={currentUser} />
-              )}
+              render={() => <Home currentUser={currentUser} />}
             ></Route>
             <Route
               path="/anime-list"
               exact
               render={() => (
-                <AnimeList darkMode={darkMode} userToken={userToken} />
+                <AnimeList
+                  dark_mode={
+                    typeof currentUser === "string"
+                      ? JSON.parse(currentUser).dark_mode
+                      : currentUser.dark_mode
+                  }
+                  currentUser={currentUser}
+                  userToken={userToken}
+                />
               )}
             ></Route>
             <Route
               path="/manga-list"
               exact
               render={() => (
-                <MangaList darkMode={darkMode} userToken={userToken} />
+                <MangaList
+                  dark_mode={
+                    typeof currentUser === "string"
+                      ? JSON.parse(currentUser).dark_mode
+                      : currentUser.dark_mode
+                  }
+                  userToken={userToken}
+                />
               )}
             ></Route>
             <Route
               path="/character-list"
               exact
               render={() => (
-                <CharList darkMode={darkMode} userToken={userToken} />
+                <CharList
+                  dark_mode={
+                    typeof currentUser === "string"
+                      ? JSON.parse(currentUser).dark_mode
+                      : currentUser.dark_mode
+                  }
+                  userToken={userToken}
+                />
               )}
             ></Route>
             <Route
@@ -86,9 +105,12 @@ function App() {
               exact
               render={() => (
                 <Profile
-                  darkMode={darkMode}
-                  currentUser={JSON.parse(currentUser)}
-                  setDarkMode={setDarkMode}
+                  currentUser={
+                    typeof currentUser === "string"
+                      ? JSON.parse(currentUser)
+                      : currentUser
+                  }
+                  setUser={setUser}
                 />
               )}
             ></Route>
@@ -105,7 +127,11 @@ function App() {
               render={(props) => (
                 <AnimeDetails
                   {...props}
-                  darkMode={darkMode}
+                  dark_mode={
+                    typeof currentUser === "string"
+                      ? JSON.parse(currentUser).dark_mode
+                      : currentUser.dark_mode
+                  }
                   userToken={userToken}
                 />
               )}
@@ -116,7 +142,11 @@ function App() {
               render={(props) => (
                 <MangaDetails
                   {...props}
-                  darkMode={darkMode}
+                  dark_mode={
+                    typeof currentUser === "string"
+                      ? JSON.parse(currentUser).dark_mode
+                      : currentUser.dark_mode
+                  }
                   userToken={userToken}
                 />
               )}
@@ -127,7 +157,11 @@ function App() {
               render={(props) => (
                 <CharDetails
                   {...props}
-                  darkMode={darkMode}
+                  dark_mode={
+                    typeof currentUser === "string"
+                      ? JSON.parse(currentUser).dark_mode
+                      : currentUser.dark_mode
+                  }
                   userToken={userToken}
                 />
               )}

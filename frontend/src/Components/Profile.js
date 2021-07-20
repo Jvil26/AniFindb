@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Loader from "react-loader-spinner";
 import AuthError from "./AuthError";
 import "../App.css";
 
 export default function Profile(props) {
+  const { currentUser, setUser } = props;
   const [state, setState] = useState({
     message: "",
     loading: false,
     username: "",
-    oldPassword: "",
-    newPassword: "",
+    success: false,
   });
+
+  const { loading, message, username, success } = state;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,44 +23,80 @@ export default function Profile(props) {
   };
 
   const handleToggle = (e) => {
-    const { darkMode } = props;
-    return props.setDarkMode(!darkMode);
+    const userObj = { ...currentUser, dark_mode: !currentUser.dark_mode };
+    setUser(userObj);
   };
 
-  const handleSave = () => {};
-  const { darkMode, currentUser } = props;
-  const { loading, message, username, oldPassword, newPassword } = state;
+  const handleSave = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:5000/users/profile/update", {
+        method: "POST",
+        body: JSON.stringify({
+          userID: currentUser._id,
+          newUsername: username,
+          dark_mode: currentUser.dark_mode,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+      const data = await res.json();
+      if (res.status !== 200) {
+        setState({
+          ...state,
+          message: data.message,
+          success: false,
+        });
+      } else if (res.status === 200) {
+        localStorage.setItem("user", JSON.stringify(data.savedUser));
+        setUser(data.savedUser);
+        setState({
+          ...state,
+          success: true,
+          message: "Successfully Saved Profile",
+        });
+      }
+    } catch (err) {
+      setState({
+        ...state,
+        message: "Failed to save profile. Try again later.",
+        success: false,
+      });
+    }
+  };
   return (
     <div>
       {currentUser ? (
         <div
           className={
             "container profile-container " +
-            (darkMode ? "darkBG text-white" : "")
+            (currentUser.dark_mode ? "darkBG text-white" : "")
           }
         >
-          <div className="custom-control custom-switch mt-5 mb-5">
-            <input
-              type="checkbox"
-              checked={darkMode}
-              className="custom-control-input"
-              id="customSwitches"
-              onChange={handleToggle}
-            />
-            <label className="custom-control-label" htmlFor="customSwitches">
-              <span>Dark Mode</span>
-            </label>
-          </div>
-          <p>Username: {currentUser.username}</p>
           <form className="edit-profile-form" onSubmit={(e) => handleSave(e)}>
+            <div className="form-group custom-control custom-switch mt-5 mb-5">
+              <input
+                type="checkbox"
+                checked={currentUser.dark_mode}
+                className="custom-control-input"
+                id="customSwitches"
+                onChange={handleToggle}
+              />
+              <label className="custom-control-label" htmlFor="customSwitches">
+                <span>Dark Mode</span>
+              </label>
+            </div>
+            <p>Username: {currentUser.username}</p>
             <div className="form-group row d-flex justify-content-center mt-5">
               <div className="col-6">
                 <label
                   className={
-                    "header " + (darkMode ? "text-light" : "text-dark")
+                    "header " +
+                    (currentUser.dark_mode ? "text-light" : "text-dark")
                   }
                 >
-                  New Username:
+                  Change Username:
                 </label>
                 <input
                   type="text"
@@ -66,7 +104,7 @@ export default function Profile(props) {
                   name="username"
                   className={
                     "form-control mt-2 " +
-                    (darkMode ? "bg-dark text-light" : "")
+                    (currentUser.dark_mode ? "bg-dark text-light" : "")
                   }
                   id="username"
                   placeholder="New Username"
@@ -74,12 +112,12 @@ export default function Profile(props) {
                 />
               </div>
             </div>
-            {message ? <p className="text-danger">{message}</p> : <div></div>}
-            <button
-              type="button"
-              className="save btn btn-lg btn-success mt-4"
-              onClick={handleSave}
-            >
+            {success === false ? (
+              <p className="text-danger">{message}</p>
+            ) : (
+              <p className="text-success">{message}</p>
+            )}
+            <button type="submit" className="save btn btn-lg btn-success mt-4">
               Save
             </button>
           </form>

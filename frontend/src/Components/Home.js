@@ -4,21 +4,21 @@ import { Link } from "react-router-dom";
 import "../App.css";
 
 export default function Home(props) {
-  const { currentUser, darkMode } = props;
+  const { currentUser } = props;
   return (
     <div>
       {currentUser ? (
-        <div className={"cover-container " + (darkMode ? "bg-dark" : "")}>
+        <div className="cover-container">
           <div
             id="carouselExampleIndicators"
-            class="carousel slide"
+            className="carousel slide"
             data-ride="carousel"
           >
-            <ol class="carousel-indicators">
+            <ol className="carousel-indicators">
               <li
                 data-target="#carouselExampleIndicators"
                 data-slide-to="0"
-                class="active"
+                className="active"
               ></li>
               <li
                 data-target="#carouselExampleIndicators"
@@ -29,21 +29,21 @@ export default function Home(props) {
                 data-slide-to="2"
               ></li>
             </ol>
-            <div class="carousel-inner">
-              <div class="carousel-item active">
+            <div className="carousel-inner">
+              <div className="carousel-item active">
                 <img
-                  class="d-block w-100"
+                  className="d-block w-100"
                   src="https://wallpaperaccess.com/full/2725441.jpg"
                   alt="First slide"
                 />
-                <div class="carousel-caption d-none d-md-block">
+                <div className="carousel-caption d-none d-md-block">
                   <h1>Anime</h1>
-                  <p class="lead">
+                  <p className="lead">
                     AniFind offers a large collection of animes that you can
                     search through and learn about. What will be your next
                     favorite anime?
                   </p>
-                  <p class="lead">
+                  <p className="lead">
                     <Link
                       exact
                       to="/anime-list"
@@ -54,20 +54,20 @@ export default function Home(props) {
                   </p>
                 </div>
               </div>
-              <div class="carousel-item">
+              <div className="carousel-item">
                 <img
-                  class="d-block w-100"
+                  className="d-block w-100"
                   src="https://st2.depositphotos.com/4741067/7734/i/950/depositphotos_77348232-stock-photo-rows-of-colorful-manga-books.jpg"
                   alt="Second slide"
                 />
-                <div class="carousel-caption d-none d-md-block">
+                <div className="carousel-caption d-none d-md-block">
                   <h1>Mangas</h1>
-                  <p class="lead">
+                  <p className="lead">
                     AniFind offers a large collection of mangas that you can
                     search through and learn about. What will be your next
                     favorite manga?
                   </p>
-                  <p class="lead">
+                  <p className="lead">
                     <Link
                       exact
                       to="/manga-list"
@@ -78,20 +78,20 @@ export default function Home(props) {
                   </p>
                 </div>
               </div>
-              <div class="carousel-item">
+              <div className="carousel-item">
                 <img
-                  class="d-block w-100"
+                  className="d-block w-100"
                   src="https://variety.com/wp-content/uploads/2015/07/naruto_movie-lionsgate.jpg"
                   alt="Third slide"
                 />
-                <div class="carousel-caption d-none d-md-block">
+                <div className="carousel-caption d-none d-md-block">
                   <h1>Characters</h1>
-                  <p class="lead">
+                  <p className="lead">
                     AniFind offers a large collection of characters that you can
                     search through and learn more about your favorite
                     characters.
                   </p>
-                  <p class="lead">
+                  <p className="lead">
                     <Link
                       exact
                       to="/character-list"
@@ -104,28 +104,28 @@ export default function Home(props) {
               </div>
             </div>
             <a
-              class="carousel-control-prev"
+              className="carousel-control-prev"
               href="#carouselExampleIndicators"
               role="button"
               data-slide="prev"
             >
               <span
-                class="carousel-control-prev-icon"
+                className="carousel-control-prev-icon"
                 aria-hidden="true"
               ></span>
-              <span class="sr-only">Previous</span>
+              <span className="sr-only">Previous</span>
             </a>
             <a
-              class="carousel-control-next"
+              className="carousel-control-next"
               href="#carouselExampleIndicators"
               role="button"
               data-slide="next"
             >
               <span
-                class="carousel-control-next-icon"
+                className="carousel-control-next-icon"
                 aria-hidden="true"
               ></span>
-              <span class="sr-only">Next</span>
+              <span className="sr-only">Next</span>
             </a>
           </div>
         </div>

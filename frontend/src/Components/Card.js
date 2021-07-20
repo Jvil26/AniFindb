@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import "../App.css";
 
 export default function Card(props) {
-  const { anime, manga, character, darkMode } = props;
+  const { anime, manga, character, dark_mode } = props;
   if (anime) {
     return (
-      <div className={"card " + (darkMode ? "dark2BG text-white" : "")}>
+      <div className={"card " + (dark_mode ? "dark2BG text-white" : "")}>
         <img
           src={anime.image_url}
           className="card-img-top rounded"
@@ -26,7 +26,7 @@ export default function Card(props) {
     );
   } else if (manga) {
     return (
-      <div className={"card " + (darkMode ? "dark2BG text-white" : "")}>
+      <div className={"card " + (dark_mode ? "dark2BG text-white" : "")}>
         <img
           src={manga.image_url}
           className="card-img-top rounded"
@@ -48,7 +48,7 @@ export default function Card(props) {
     );
   } else {
     return (
-      <div className={"card " + (darkMode ? "dark2BG text-white" : "")}>
+      <div className={"card " + (dark_mode ? "dark2BG text-white" : "")}>
         <img
           src={character.image_url}
           className="card-img-top rounded"
@@ -59,7 +59,11 @@ export default function Card(props) {
             {character.title ? character.title : character.name}
           </h5>
           <p className="card-text">{character.name_kanji}</p>
-          <p className="card-text">Rank: {character.rank}</p>
+          {character.rank ? (
+            <p className="card-text">Rank: {character.rank}</p>
+          ) : (
+            <p></p>
+          )}
           <Link
             to={
               "/character-details/" + character.mal_id + "/" + character.title

@@ -3,7 +3,12 @@ const router = express.Router();
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { registerValidation, loginValidation } = require("../validation");
+const ObjectId = require("mongoose").Types.ObjectId;
+const {
+  registerValidation,
+  loginValidation,
+  usernameOnlyValidation,
+} = require("../validation");
 
 router.post("/register", async (req, res) => {
   try {
@@ -31,6 +36,8 @@ router.post("/register", async (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
+      dark_mode: false,
+      watchList: [],
     });
     const savedUser = await user.save();
     const token = jwt.sign(savedUser.toJSON(), process.env.ACCESS_TOKEN_SECRET);
@@ -67,11 +74,48 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/profile", async (req, res) => {
-  const user = req.body.user;
-  const newUsername = req.body.username;
-  const oldPassword = req.body.oldPassword;
-  const newPassword = req.body.newPassword;
+router.post("/profile/update", async (req, res) => {
+  try {
+    const userID = req.body.userID;
+    const newUsername = req.body.newUsername;
+    const dark_mode = req.body.dark_mode;
+
+    if (newUsername.length > 0) {
+      const { error } = usernameOnlyValidation(req.body);
+      if (error) {
+        const parsedError = error.details[0].message
+          .replace(/["]/g, "")
+          .split(" ");
+        parsedError[0] =
+          parsedError[0].charAt(0).toUpperCase() + parsedError[0].slice(1);
+        return res.status(400).send({ message: parsedError.join(" ") });
+      }
+    }
+
+    const usernameExist = await User.findOne({
+      username: req.body.newUsername,
+    });
+    if (usernameExist) {
+      return res.status(400).send({ message: "Username already exists" });
+    }
+    const { username } = await User.findById(userID);
+
+    const update = {
+      username: newUsername.length > 0 ? newUsername : username,
+      dark_mode: dark_mode,
+    };
+
+    const savedUser = await User.findOneAndUpdate(
+      { _id: new ObjectId(userID) },
+      update,
+      {
+        new: true,
+      }
+    );
+    res.json({ savedUser: savedUser });
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
 module.exports = router;

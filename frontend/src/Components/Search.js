@@ -30,7 +30,7 @@ export default function Search(props) {
     });
   };
 
-  const { darkMode, handleSearch, resultsLength } = props;
+  const { dark_mode, handleSearch, resultsLength } = props;
   const { animeFilter, mangaFilter, charFilter, inputVal } = state;
   return (
     <section className="intro">
@@ -41,7 +41,9 @@ export default function Search(props) {
               <div className="row">
                 <div className="col-md-10 col-lg-8 col-xl-7 mx-auto">
                   <div
-                    className={"card " + (darkMode ? "dark2BG text-white" : "")}
+                    className={
+                      "card " + (dark_mode ? "dark2BG text-white" : "")
+                    }
                   >
                     <div className="card-header">
                       <div className="input-group input-group-lg">
@@ -162,12 +164,12 @@ export default function Search(props) {
                           <div className="d-flex justify-content-between align-items-center mt-4">
                             <p
                               className={
-                                "mb-0 " + (!darkMode ? "text-muted" : "")
+                                "mb-0 " + (!dark_mode ? "text-muted" : "")
                               }
                             >
                               <span
                                 className={
-                                  "text-info " + (darkMode ? "text-white" : "")
+                                  "text-info " + (dark_mode ? "text-white" : "")
                                 }
                               >
                                 {resultsLength}{" "}
@@ -181,7 +183,7 @@ export default function Search(props) {
                                 data-mdb-ripple-color="dark"
                                 onClick={handleReset}
                               >
-                                <span className={darkMode ? "text-white" : ""}>
+                                <span className={dark_mode ? "text-white" : ""}>
                                   Reset
                                 </span>
                               </button>

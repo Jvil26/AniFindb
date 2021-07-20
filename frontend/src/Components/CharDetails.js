@@ -31,7 +31,7 @@ export default function CharDetails(props) {
       if (res.status !== 200) {
         setState({
           loading: false,
-          message: res.message,
+          message: character.message,
         });
       } else if (res.status === 200) {
         setState({
@@ -52,20 +52,20 @@ export default function CharDetails(props) {
   }, []);
 
   const { loading, message, character } = state;
-  const { darkMode, userToken } = props;
+  const { dark_mode, userToken } = props;
   return (
     <div>
       {userToken ? (
         <div
           className={
-            "container animeDetails-container " + (darkMode ? "darkBG" : "")
+            "container animeDetails-container " + (dark_mode ? "darkBG" : "")
           }
         >
           <Link to="/character-list" exact>
             <i
               className={
                 "fas fa-arrow-left fa-3x position-absolute " +
-                (darkMode ? "text-light" : "text-dark")
+                (dark_mode ? "text-light" : "text-dark")
               }
             ></i>
           </Link>
@@ -81,7 +81,7 @@ export default function CharDetails(props) {
               <div
                 className={
                   "card card-details mx-auto mb-5 mt-5 " +
-                  (darkMode ? "dark2BG text-white" : "")
+                  (dark_mode ? "dark2BG text-white" : "")
                 }
               >
                 <div className="card-body">
