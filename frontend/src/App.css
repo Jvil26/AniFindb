@@ -113,7 +113,9 @@
 }
 
 .register-form,
-.login-form {
+.login-form,
+.confirmEmail-form,
+.resetPassword-form {
   margin-top: 20px;
 }
 

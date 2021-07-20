@@ -14,9 +14,10 @@ import MangaDetails from "./Components/MangaDetails";
 import CharList from "./Components/CharList";
 import CharDetails from "./Components/CharDetails";
 import Home from "./Components/Home";
+import EmailConfirmation from "./Components/EmailConfirmation";
 
 function App() {
-  const [currentUser, setUser] = useState({});
+  const [currentUser, setUser] = useState(null);
   const [userToken, setUserToken] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -169,9 +170,12 @@ function App() {
             <Route
               path="/reset-password"
               exact
-              render={() => (
-                <ResetPassword setUser={setUser} setUserToken={setUserToken} />
-              )}
+              render={() => <ResetPassword />}
+            ></Route>
+            <Route
+              path="/email-confirmation"
+              exact
+              render={() => <EmailConfirmation />}
             ></Route>
           </Switch>
         </BrowserRouter>

@@ -9,6 +9,9 @@ const {
   loginValidation,
   usernameOnlyValidation,
 } = require("../validation");
+const sgMail = require("@sendgrid/mail");
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 router.post("/register", async (req, res) => {
   try {
@@ -22,7 +25,9 @@ router.post("/register", async (req, res) => {
       return res.status(400).send({ message: parsedError.join(" ") });
     }
 
-    const emailExist = await User.findOne({ email: req.body.email });
+    const emailExist = await User.findOne({
+      email: req.body.email.toLowerCase(),
+    });
     const usernameExist = await User.findOne({ username: req.body.username });
     if (emailExist)
       return res.status(400).send({ message: "Email already exists" });
@@ -34,7 +39,7 @@ router.post("/register", async (req, res) => {
 
     const user = new User({
       username: req.body.username,
-      email: req.body.email,
+      email: req.body.email.toLowerCase(),
       password: hashedPassword,
       dark_mode: false,
       watchList: [],
@@ -115,6 +120,41 @@ router.post("/profile/update", async (req, res) => {
     res.json({ savedUser: savedUser });
   } catch (err) {
     res.status(400).send(err);
+  }
+});
+
+router.post("/send-confirmation-email", async (req, res) => {
+  const email = req.body.email.toLowerCase();
+  try {
+    const user = await User.findOne({ email: email });
+    if (user) {
+      await sgMail.send({
+        to: user.email,
+        from: "justinsinsin25@gmail.com",
+        templateId: "d-a57287a3928a491b8a7da2710caadcd9",
+      });
+      return res.json({ user: user, message: "Successfully Sent Email!" });
+    } else {
+      return res.status(400).send({ message: "Email does not exist" });
+    }
+  } catch (err) {
+    console.log(err.toString());
+  }
+});
+
+router.post("/reset-password", async (req, res) => {
+  const newPassword = req.body.newPassword;
+  const resetEmail = req.body.resetEmail.toLowerCase();
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    await User.findOneAndUpdate(
+      { email: resetEmail },
+      { password: hashedPassword }
+    );
+    return res.send({ message: "Password has been reset!" });
+  } catch (err) {
+    return res.status(400).send({ message: "Failed to reset password" });
   }
 });
 

@@ -102,7 +102,7 @@ export default function Login(props) {
           <h5 className="mt-4">Don't have an account?</h5>
           <Link to="/register">Register here!</Link>
           <h5 className="mt-2">Forgot Password?</h5>
-          <Link to="/reset-password">Reset Password</Link>
+          <Link to="/email-confirmation">Reset Password</Link>
         </form>
       )}
       {loading ? (
