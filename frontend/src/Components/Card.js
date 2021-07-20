@@ -12,12 +12,16 @@ export default function Card(props) {
           className="card-img-top rounded"
           alt="Anime"
         />
-        <div className="card-body">
+        <div className="card-body mt-3">
           <h5 className="card-title">{anime.title}</h5>
-          <p className="card-text">Rank: {anime.rank}</p>
+          {anime.rank ? (
+            <p className="card-text pt-2">Rank: {anime.rank}</p>
+          ) : (
+            <p></p>
+          )}{" "}
           <p className="card-text">Episodes: {anime.episodes}</p>
           <Link to={"/anime-details/" + anime.mal_id + "/" + anime.title}>
-            <button type="button" className="btn btn-primary">
+            <button type="button" className="btn btn-primary mt-3">
               Learn More
             </button>
           </Link>
@@ -32,14 +36,18 @@ export default function Card(props) {
           className="card-img-top rounded"
           alt="Manga"
         />
-        <div className="card-body">
+        <div className="card-body mt-3">
           <h5 className="card-title">{manga.title}</h5>
-          <p className="card-text">Rank: {manga.rank}</p>
+          {manga.rank ? (
+            <p className="card-text pt-2">Rank: {manga.rank}</p>
+          ) : (
+            <p></p>
+          )}{" "}
           <p className="card-text">
             Volumes: {manga.volumes ? manga.volumes : "N/A"}
           </p>
           <Link to={"/manga-details/" + manga.mal_id + "/" + manga.title}>
-            <button type="button" className="btn btn-primary">
+            <button type="button" className="btn btn-primary mt-3">
               Learn More
             </button>
           </Link>
@@ -54,7 +62,7 @@ export default function Card(props) {
           className="card-img-top rounded"
           alt="char"
         />
-        <div className="card-body">
+        <div className="card-body mt-3">
           <h5 className="card-title">
             {character.title ? character.title : character.name}
           </h5>
@@ -69,7 +77,7 @@ export default function Card(props) {
               "/character-details/" + character.mal_id + "/" + character.title
             }
           >
-            <button type="button" className="btn btn-primary">
+            <button type="button" className="btn btn-primary mt-3">
               Learn More
             </button>
           </Link>

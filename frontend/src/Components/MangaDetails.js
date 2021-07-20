@@ -74,7 +74,9 @@ export default function MangaDetails(props) {
             <div></div>
           )}
           {loading ? (
-            <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+            <div className="loader">
+              <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+            </div>
           ) : (
             <div>
               <div
@@ -84,15 +86,15 @@ export default function MangaDetails(props) {
                 }
               >
                 <div className="card-body">
-                  <h5 className="card-title">Title: {manga.title}</h5>
-                  <h5 className="card-title">
+                  <h5 className="card-title pt-2">{manga.title}</h5>
+                  <h5 className="card-title pb-2">
                     English Title: {manga.title_english}
                   </h5>
                   <h6 className="card-title pt-3">Volumes: {manga.volumes}</h6>
-                  <h6 className="card-title pb-3">
+                  <h6 className="card-title pb-4">
                     Chapters: {manga.chapters}
                   </h6>
-                  <p className="card-text">{manga.synopsis}</p>
+                  <p className="card-text mb-3">{manga.synopsis}</p>
                 </div>
               </div>
             </div>

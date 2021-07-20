@@ -19,14 +19,17 @@ export default function AnimeList(props) {
   });
 
   const handleSearch = async (e, inputVal, searchState) => {
+    e.preventDefault();
+    const searchVal = inputVal;
+    if (searchVal.length === 0) {
+      return;
+    }
     try {
-      e.preventDefault();
       setState({
         ...state,
         hasMore: false,
         loading: true,
       });
-      const searchVal = inputVal;
       const res = await fetch(
         `http://localhost:5000/api/anime-list/search?title=${searchVal}`,
         {
@@ -92,10 +95,10 @@ export default function AnimeList(props) {
       } else if (res.status === 200) {
         setState({
           ...state,
-          animes: [...state.filteredAnimes, ...animes.top],
           filteredAnimes: [...state.filteredAnimes, ...animes.top],
           loading: false,
           page: state.page + 1,
+          hasMore: true,
         });
       }
     } catch (err) {
@@ -117,7 +120,9 @@ export default function AnimeList(props) {
         className={"container loading-container " + (dark_mode ? "darkBG" : "")}
       >
         {state.loading ? (
-          <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+          <div className="loader">
+            <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+          </div>
         ) : (
           <div></div>
         )}

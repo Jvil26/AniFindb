@@ -74,7 +74,9 @@ export default function AnimeDetails(props) {
             <div></div>
           )}
           {loading ? (
-            <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+            <div className="loader">
+              <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+            </div>
           ) : (
             <div>
               <div
@@ -84,7 +86,7 @@ export default function AnimeDetails(props) {
                 }
               >
                 <div className="card-body">
-                  <h5 className="card-title">Title: {anime.title}</h5>
+                  <h5 className="card-title pt-2">{anime.title}</h5>
                   <h5 className="card-title">
                     English Title: {anime.title_english}
                   </h5>

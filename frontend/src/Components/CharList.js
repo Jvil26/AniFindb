@@ -18,13 +18,16 @@ export default function CharList(props) {
   });
 
   const handleSearch = async (e, inputVal, searchState) => {
+    e.preventDefault();
+    const searchVal = inputVal;
+    if (searchVal.length === 0) {
+      return;
+    }
     try {
-      e.preventDefault();
       setState({
         hasMore: false,
         loading: true,
       });
-      const searchVal = inputVal;
       const res = await fetch(
         `http://localhost:5000/api/character-list/search?title=${searchVal}`,
         {
@@ -43,6 +46,7 @@ export default function CharList(props) {
         });
       } else if (res.status === 200) {
         setState({
+          ...state,
           filteredChars: [...data.results],
           loading: false,
         });
@@ -91,6 +95,7 @@ export default function CharList(props) {
           filteredChars: [...state.filteredChars, ...characters.top],
           loading: false,
           page: state.page + 1,
+          hasMore: true,
         });
       }
     } catch (err) {
@@ -113,7 +118,9 @@ export default function CharList(props) {
         className={"container loading-container " + (dark_mode ? "darkBG" : "")}
       >
         {state.loading ? (
-          <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+          <div className="loader">
+            <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+          </div>
         ) : (
           <div></div>
         )}

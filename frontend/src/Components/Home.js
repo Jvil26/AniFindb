@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import AuthError from "./AuthError";
 import { Link } from "react-router-dom";
 import "../App.css";

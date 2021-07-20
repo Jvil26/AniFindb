@@ -74,8 +74,11 @@ export default function CharDetails(props) {
           ) : (
             <div></div>
           )}
+
           {loading ? (
-            <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+            <div className="loader">
+              <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+            </div>
           ) : (
             <div>
               <div
@@ -85,8 +88,8 @@ export default function CharDetails(props) {
                 }
               >
                 <div className="card-body">
-                  <h4 className="card-title">Name: {character.name}</h4>
-                  <h5 className="card-title">
+                  <h3 className="card-title pt-2">{character.name}</h3>
+                  <h5 className="card-title pb-3">
                     Kanji Name: {character.name_kanji}
                   </h5>
                   <h6 className="card-title mt-3">About: </h6>

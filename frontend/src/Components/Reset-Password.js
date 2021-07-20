@@ -12,6 +12,7 @@ export default function ResetPassword() {
     confirmedEmail: false,
     oldPassword: "",
     newPassword: "",
+    success: false,
   });
 
   const handleChange = (e) => {
@@ -23,15 +24,19 @@ export default function ResetPassword() {
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-      this.setState({
-        loading: true,
+      setState({
+        ...state,
+        success: true,
+        loading: false,
+        message: "Successfully Sent Email!",
       });
     } catch (err) {
       setState({
         message: "Error logging in. Try again later.",
         loading: false,
+        success: false,
       });
     }
   };
@@ -43,6 +48,7 @@ export default function ResetPassword() {
     loading,
     oldPassword,
     newPassword,
+    success,
   } = state;
   return (
     <div className="container resetPassword-container">
@@ -64,43 +70,25 @@ export default function ResetPassword() {
                 onChange={handleChange}
               />
             </div>
-            <div className="form-group row d-flex justify-content-center mt-5">
-              <div className="col-6">
-                <label>Current Password</label>
-                <input
-                  type="password"
-                  value={oldPassword}
-                  name="oldPassword"
-                  className="form-control"
-                  id="oldPassword"
-                  placeholder="Current Password"
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div className="form-group row d-flex justify-content-center mt-4">
-              <div className="col-6">
-                <label>New Password</label>
-                <input
-                  type="password"
-                  value={newPassword}
-                  name="newPassword"
-                  className="form-control"
-                  id="newPassword"
-                  placeholder="New Password"
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
           </div>
-          {message ? <p className="text-danger">{message}</p> : <div></div>}
+          {success === false ? (
+            <p className="text-danger mt-2">{message}</p>
+          ) : (
+            <p className="text-success mt-2">{message}</p>
+          )}
           <button type="submit" className="btn btn-primary mt-3">
             Send Email
           </button>
         </form>
       )}
       {loading ? (
-        <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+        <Loader
+          className="mt-4"
+          type="Puff"
+          color="#00BFFF"
+          height={100}
+          width={100}
+        />
       ) : (
         <div></div>
       )}

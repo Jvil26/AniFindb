@@ -18,6 +18,11 @@ export default function MangaList(props) {
   });
 
   const handleSearch = async (e, inputVal, searchState) => {
+    e.preventDefault();
+    const searchVal = inputVal;
+    if (searchVal.length === 0) {
+      return;
+    }
     try {
       e.preventDefault();
       setState({
@@ -25,7 +30,6 @@ export default function MangaList(props) {
         hasMore: false,
         loading: true,
       });
-      const searchVal = inputVal;
       const res = await fetch(
         `http://localhost:5000/api/manga-list/search?title=${searchVal}`,
         {
@@ -47,6 +51,7 @@ export default function MangaList(props) {
           ...state,
           filteredMangas: [...data.results],
           loading: false,
+          hasMore: true,
         });
       }
     } catch (err) {
@@ -117,7 +122,9 @@ export default function MangaList(props) {
         className={"container loading-container " + (dark_mode ? "darkBG" : "")}
       >
         {state.loading ? (
-          <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+          <div className="loader">
+            <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+          </div>
         ) : (
           <div></div>
         )}
