@@ -37,7 +37,7 @@ export default function Home(props) {
                   alt="First slide"
                 />
                 <div className="carousel-caption d-none d-md-block">
-                  <h1>Anime</h1>
+                  <h1>Animes</h1>
                   <p className="lead">
                     AniFind offers a large collection of animes that you can
                     search through and learn about. What will be your next
