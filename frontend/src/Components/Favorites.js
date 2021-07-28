@@ -39,7 +39,7 @@ export default function Favorites(props) {
         columns.push(
           <div
             className={"w-100 mt-2 " + (dark_mode ? "text-light" : "text-dark")}
-            key={idx + 200}
+            key={idx + 300}
           >
             <h1>Characters</h1>
           </div>
@@ -50,7 +50,7 @@ export default function Favorites(props) {
         columns.push(
           <div
             className={"w-100 mt-2 " + (dark_mode ? "text-light" : "text-dark")}
-            key={idx + 200}
+            key={idx + 400}
           >
             <h1>Mangas</h1>
           </div>

@@ -80,11 +80,8 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/profile/update", async (req, res) => {
+  const { userID, newUsername, dark_mode } = req.body;
   try {
-    const userID = req.body.userID;
-    const newUsername = req.body.newUsername;
-    const dark_mode = req.body.dark_mode;
-
     if (newUsername.length > 0) {
       const { error } = usernameOnlyValidation(req.body);
       if (error) {
@@ -159,9 +156,7 @@ router.post("/reset-password", async (req, res) => {
 });
 
 router.post("/favorites/add", async (req, res) => {
-  const item = req.body.item;
-  const userID = req.body.userID;
-  const category = req.body.category;
+  const { item, userID, category } = req.body;
   try {
     const user = await User.findById(userID);
     const obj = {
@@ -182,13 +177,11 @@ router.post("/favorites/add", async (req, res) => {
 });
 
 router.delete("/favorites/remove", async (req, res) => {
-  const removeItem = req.body.item;
-  const userID = req.body.userID;
-  const category = req.body.category;
+  const { mal_id, userID, category } = req.body;
   try {
     const user = await User.findById(userID);
     user.favorites = user.favorites.filter(
-      (item) => item.category !== category && item.mal_id !== removeItem.mal_id
+      (item) => item.category !== category || item.mal_id !== mal_id
     );
     const updatedUser = await user.save();
     res.json(updatedUser);

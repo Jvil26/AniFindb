@@ -17,7 +17,7 @@ export default function FavoriteCard(props) {
         method: "DELETE",
         body: JSON.stringify({
           userID: currentUser._id,
-          item: item,
+          mal_id: item.mal_id,
           category: category,
         }),
         headers: {
