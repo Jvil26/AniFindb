@@ -43,6 +43,11 @@ export default function Navbar(props) {
                   </NavLink>
                 </li>
                 <li className="navbar-item">
+                  <NavLink exact to="/favorites" className="nav-link">
+                    Favorites
+                  </NavLink>
+                </li>
+                <li className="navbar-item">
                   <NavLink exact to="/profile" className="nav-link">
                     Profile
                   </NavLink>
@@ -64,7 +69,7 @@ export default function Navbar(props) {
       ) : (
         <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
           <Link exact to="/" className="navbar-brand">
-            Anime
+            <img src="favicon.ico" width="50" height="50" alt="Home Icon" />
           </Link>
           <button
             className="navbar-toggler"
@@ -79,26 +84,6 @@ export default function Navbar(props) {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto">
-              <li className="navbar-item">
-                <NavLink exact to="/anime-list" className="nav-link">
-                  Animes
-                </NavLink>
-              </li>
-              <li className="navbar-item">
-                <NavLink exact to="/manga-list" className="nav-link">
-                  Mangas
-                </NavLink>
-              </li>
-              <li className="navbar-item">
-                <NavLink exact to="/character-list" className="nav-link">
-                  Characters
-                </NavLink>
-              </li>
-              <li className="navbar-item">
-                <NavLink exact to="/profile" className="nav-link">
-                  Profile
-                </NavLink>
-              </li>
               <li className="navbar-item">
                 <NavLink exact to="/register" className="nav-link">
                   Register

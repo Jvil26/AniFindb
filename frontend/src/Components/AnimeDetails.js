@@ -9,15 +9,17 @@ export default function AnimeDetails(props) {
     message: "",
     loading: false,
     anime: {},
+    genres: "",
+    studios: "",
   });
 
   const getAnimeDetails = async () => {
+    setState({
+      ...state,
+      loading: true,
+    });
+    const { id } = props.match.params;
     try {
-      setState({
-        ...state,
-        loading: true,
-      });
-      const { id } = props.match.params;
       const res = await fetch(`http://localhost:5000/api/anime-details/${id}`, {
         method: "GET",
         headers: {
@@ -26,16 +28,29 @@ export default function AnimeDetails(props) {
         },
       });
       const anime = await res.json();
+      console.log(anime);
       if (res.status !== 200) {
         setState({
           loading: false,
           message: anime.message,
         });
       } else if (res.status === 200) {
+        let genres = "";
+        anime.genres.forEach((genre) => {
+          genres += genre.name + ", ";
+        });
+        genres = genres.slice(0, -1);
+        let studios = "";
+        anime.studios.forEach((studio) => {
+          studios += studio.name + ", ";
+        });
+        studios = studios.slice(0, -1);
         setState({
           ...state,
           loading: false,
           anime: anime,
+          genres: genres.slice(0, -1),
+          studios: studios.slice(0, -1),
         });
       }
     } catch (err) {
@@ -60,7 +75,10 @@ export default function AnimeDetails(props) {
             "container animeDetails-container " + (dark_mode ? "darkBG" : "")
           }
         >
-          <Link to="/anime-list" exact>
+          <Link
+            to={props.location.backURL ? props.location.backURL : "/anime-list"}
+            exact
+          >
             <i
               className={
                 "fas fa-arrow-left fa-3x position-absolute " +
@@ -87,9 +105,16 @@ export default function AnimeDetails(props) {
               >
                 <div className="card-body">
                   <h5 className="card-title pt-2">{anime.title}</h5>
-                  <h5 className="card-title">
-                    English Title: {anime.title_english}
-                  </h5>
+                  <p className="card-text pb-2 mb-2">
+                    {anime.title === anime.title_english
+                      ? "Japanese Title: " + anime.title_japanese
+                      : "English Title: " + anime.title_english}
+                  </p>
+                  <p className="card-text">Episodes: {anime.episodes}</p>
+                  <p className="card-text">Rating: {anime.rating}</p>
+                  <p className="card-text">Genres: {state.genres}</p>
+                  <p className="card-text">Duration: {anime.duration}</p>
+                  <p className="card-text">Studios: {state.studios}</p>
                   <p className="card-text">{anime.synopsis}</p>
                 </div>
                 <div className="embed-responsive embed-responsive-16by9">

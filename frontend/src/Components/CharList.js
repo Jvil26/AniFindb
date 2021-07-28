@@ -9,7 +9,6 @@ import "../App.css";
 export default function CharList(props) {
   const [state, setState] = useState({
     message: "",
-    characters: [],
     filteredChars: [],
     loading: true,
     page: 1,
@@ -17,17 +16,17 @@ export default function CharList(props) {
     currentFilter: "manga",
   });
 
-  const handleSearch = async (e, inputVal, searchState) => {
+  const handleSearch = async (e, inputVal) => {
     e.preventDefault();
     const searchVal = inputVal;
     if (searchVal.length === 0) {
       return;
     }
+    setState({
+      hasMore: false,
+      loading: true,
+    });
     try {
-      setState({
-        hasMore: false,
-        loading: true,
-      });
       const res = await fetch(
         `http://localhost:5000/api/character-list/search?title=${searchVal}`,
         {
@@ -60,21 +59,14 @@ export default function CharList(props) {
     }
   };
 
-  const getChars = async (filterType) => {
+  const getChars = async () => {
     try {
       setState({
         loading: true,
       });
-      let type = "";
-      if (filterType) {
-        type = filterType;
-      } else {
-        type = "character";
-      }
       const page = state.page;
-      const subtype = "bypopularity";
       const res = await fetch(
-        `http://localhost:5000/api/character-list?subtype=${subtype}&page=${page}`,
+        `http://localhost:5000/api/character-list?page=${page}`,
         {
           method: "GET",
           headers: {
@@ -111,7 +103,7 @@ export default function CharList(props) {
     getChars();
   }, []);
 
-  const { dark_mode, userToken } = props;
+  const { dark_mode, userToken, setUser } = props;
   if (state.loading) {
     return (
       <div
@@ -129,17 +121,6 @@ export default function CharList(props) {
   } else if (!userToken) {
     return <AuthError />;
   } else {
-    let columns = [];
-    state.filteredChars.forEach((char, idx) => {
-      columns.push(
-        <div className="col-4 mt-4 mb-4" key={idx}>
-          <Card dark_mode={dark_mode} character={char} />
-        </div>
-      );
-      if ((idx + 1) % 3 === 0) {
-        columns.push(<div className="w-100" key={idx + 200}></div>);
-      }
-    });
     return (
       <div
         className={
@@ -150,6 +131,7 @@ export default function CharList(props) {
           resultsLength={state.filteredChars.length}
           handleSearch={handleSearch}
           dark_mode={dark_mode}
+          currentPage="/character-list"
         />
         {state.message ? (
           <p className="text-danger mt-5">{state.message}</p>
@@ -161,7 +143,19 @@ export default function CharList(props) {
           dataLength={state.filteredChars.length}
           hasMore={state.hasMore}
         >
-          {<div className="row">{columns}</div>}
+          <div className="card-deck">
+            {state.filteredChars.map((char, idx) => {
+              return (
+                <div className="col-4 mt-4 mb-4" key={idx}>
+                  <Card
+                    dark_mode={dark_mode}
+                    character={char}
+                    setUser={setUser}
+                  />
+                </div>
+              );
+            })}
+          </div>{" "}
         </InfiniteScroll>
         {state.hasMore ? (
           <button

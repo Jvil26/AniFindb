@@ -20,10 +20,10 @@ export default function ResetPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setState({
+      loading: true,
+    });
     try {
-      setState({
-        loading: true,
-      });
       const resetEmail = localStorage.getItem("resetEmail");
       const res = await fetch("http://localhost:5000/users/reset-password", {
         method: "POST",

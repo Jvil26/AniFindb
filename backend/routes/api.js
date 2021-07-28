@@ -15,12 +15,11 @@ function authToken(req, res, next) {
 }
 
 router.get("/anime-list", authToken, async (req, res) => {
+  const page = req.query.page;
+
   try {
-    const page = req.query.page;
-    const subtype = req.query.subtype;
-    const subType = "bypopularity";
     const animes = await fetch(
-      `https://api.jikan.moe/v3/top/anime/${page}/${subtype}`,
+      `https://api.jikan.moe/v3/top/anime/${page}/bypopularity`,
       {
         method: "GET",
         headers: {
@@ -36,8 +35,8 @@ router.get("/anime-list", authToken, async (req, res) => {
 });
 
 router.get("/anime-list/search", authToken, async (req, res) => {
+  const animeTitle = req.query.title;
   try {
-    const animeTitle = req.query.title;
     const anime = await fetch(
       `https://api.jikan.moe/v3/search/anime?q=${animeTitle}&page=1`,
       {
@@ -55,8 +54,8 @@ router.get("/anime-list/search", authToken, async (req, res) => {
 });
 
 router.get("/anime-details/:id", authToken, async (req, res) => {
+  const animeID = req.params.id;
   try {
-    const animeID = req.params.id;
     const anime = await fetch(`https://api.jikan.moe/v3/anime/${animeID}//`, {
       method: "GET",
       headers: {
@@ -71,11 +70,10 @@ router.get("/anime-details/:id", authToken, async (req, res) => {
 });
 
 router.get("/manga-list", authToken, async (req, res) => {
+  const page = req.query.page;
   try {
-    const page = req.query.page;
-    const subtype = req.query.subtype;
     const mangas = await fetch(
-      `https://api.jikan.moe/v3/top/manga/${page}/${subtype}`,
+      `https://api.jikan.moe/v3/top/manga/${page}/bypopularity`,
       {
         method: "GET",
         headers: {
@@ -91,8 +89,8 @@ router.get("/manga-list", authToken, async (req, res) => {
 });
 
 router.get("/manga-list/search", authToken, async (req, res) => {
+  const mangaTitle = req.query.title;
   try {
-    const mangaTitle = req.query.title;
     const manga = await fetch(
       `https://api.jikan.moe/v3/search/manga?q=${mangaTitle}&page=1`,
       {
@@ -110,8 +108,8 @@ router.get("/manga-list/search", authToken, async (req, res) => {
 });
 
 router.get("/manga-details/:id", authToken, async (req, res) => {
+  const mangaID = req.params.id;
   try {
-    const mangaID = req.params.id;
     const manga = await fetch(`https://api.jikan.moe/v3/manga/${mangaID}//`, {
       method: "GET",
       headers: {
@@ -126,8 +124,8 @@ router.get("/manga-details/:id", authToken, async (req, res) => {
 });
 
 router.get("/character-list", authToken, async (req, res) => {
+  const page = req.query.page;
   try {
-    const page = req.query.page;
     const characters = await fetch(
       `https://api.jikan.moe/v3/top/characters/${page}`,
       {
@@ -145,8 +143,8 @@ router.get("/character-list", authToken, async (req, res) => {
 });
 
 router.get("/character-list/search", authToken, async (req, res) => {
+  const charTitle = req.query.title;
   try {
-    const charTitle = req.query.title;
     const char = await fetch(
       `https://api.jikan.moe/v3/search/character?q=${charTitle}&page=1`,
       {
@@ -164,10 +162,26 @@ router.get("/character-list/search", authToken, async (req, res) => {
 });
 
 router.get("/character-details/:id", authToken, async (req, res) => {
+  const id = req.params.id;
   try {
-    const charID = req.params.id;
-    const character = await fetch(
-      `https://api.jikan.moe/v3/character/${charID}/`,
+    const character = await fetch(`https://api.jikan.moe/v3/character/${id}/`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+    const parsedCharacter = await character.json();
+    res.json(parsedCharacter);
+  } catch (err) {
+    res.status(400).send({ message: "Failed to get character details" });
+  }
+});
+
+router.get("/search", authToken, async (req, res) => {
+  const { type, genreIds, page } = req.query;
+  try {
+    const data = await fetch(
+      `https://api.jikan.moe/v3/search/${type}?q=&page=${page}&genre=${genreIds}&order_by=score`,
       {
         method: "GET",
         headers: {
@@ -175,10 +189,10 @@ router.get("/character-details/:id", authToken, async (req, res) => {
         },
       }
     );
-    const parsedCharacter = await character.json();
-    res.json(parsedCharacter);
+    let parsedData = await data.json();
+    res.json(parsedData);
   } catch (err) {
-    res.status(400).send({ message: "Failed to get character details" });
+    res.status(400).send({ message: "Unable to load data" });
   }
 });
 

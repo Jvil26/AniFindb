@@ -23,11 +23,11 @@ export default function EmailConfirmation(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setState({
+      ...state,
+      loading: true,
+    });
     try {
-      setState({
-        ...state,
-        loading: true,
-      });
       const res = await fetch(
         "http://localhost:5000/users/send-confirmation-email",
         {

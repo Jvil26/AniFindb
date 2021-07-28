@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from "react";
-import Loader from "react-loader-spinner";
+import React, { useState, useContext } from "react";
 import AuthError from "./AuthError";
+import Loader from "react-loader-spinner";
 import "../App.css";
+import UserContext from "../UserContext";
 
 export default function Profile(props) {
-  const { currentUser, setUser } = props;
+  const { setUser } = props;
   const [state, setState] = useState({
     message: "",
     loading: false,
     username: "",
     success: false,
   });
+
+  const currentUser = useContext(UserContext);
 
   const { loading, message, username, success } = state;
 
@@ -29,6 +32,10 @@ export default function Profile(props) {
 
   const handleSave = async (e) => {
     e.preventDefault();
+    setState({
+      ...state,
+      loading: true,
+    });
     try {
       const res = await fetch("http://localhost:5000/users/profile/update", {
         method: "POST",
@@ -74,6 +81,9 @@ export default function Profile(props) {
             (currentUser.dark_mode ? "darkBG text-white" : "")
           }
         >
+          <p class="mt-5">
+            Account Created On: {currentUser.createdAt.substring(0, 10)}
+          </p>
           <form className="edit-profile-form" onSubmit={(e) => handleSave(e)}>
             <div className="form-group custom-control custom-switch mt-5 mb-5">
               <input

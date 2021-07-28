@@ -15,6 +15,9 @@ import CharList from "./Components/CharList";
 import CharDetails from "./Components/CharDetails";
 import Home from "./Components/Home";
 import EmailConfirmation from "./Components/EmailConfirmation";
+import Favorites from "./Components/Favorites";
+
+import UserContext from "./UserContext";
 
 function App() {
   const [currentUser, setUser] = useState(null);
@@ -46,137 +49,162 @@ function App() {
         <BrowserRouter>
           <Navbar currentUser={currentUser} logOut={logOut} />
           <Switch>
-            <Route
-              path="/"
-              exact
-              render={() => <Home currentUser={currentUser} />}
-            ></Route>
-            <Route
-              path="/anime-list"
-              exact
-              render={() => (
-                <AnimeList
-                  dark_mode={
-                    typeof currentUser === "string"
-                      ? JSON.parse(currentUser).dark_mode
-                      : currentUser.dark_mode
-                  }
-                  currentUser={currentUser}
-                  userToken={userToken}
-                />
-              )}
-            ></Route>
-            <Route
-              path="/manga-list"
-              exact
-              render={() => (
-                <MangaList
-                  dark_mode={
-                    typeof currentUser === "string"
-                      ? JSON.parse(currentUser).dark_mode
-                      : currentUser.dark_mode
-                  }
-                  userToken={userToken}
-                />
-              )}
-            ></Route>
-            <Route
-              path="/character-list"
-              exact
-              render={() => (
-                <CharList
-                  dark_mode={
-                    typeof currentUser === "string"
-                      ? JSON.parse(currentUser).dark_mode
-                      : currentUser.dark_mode
-                  }
-                  userToken={userToken}
-                />
-              )}
-            ></Route>
-            <Route
-              path="/login"
-              exact
-              render={() => (
-                <Login setUser={setUser} setUserToken={setUserToken} />
-              )}
-            ></Route>
-            <Route
-              path="/profile"
-              exact
-              render={() => (
-                <Profile
-                  currentUser={
-                    typeof currentUser === "string"
-                      ? JSON.parse(currentUser)
-                      : currentUser
-                  }
-                  setUser={setUser}
-                />
-              )}
-            ></Route>
-            <Route
-              path="/register"
-              exact
-              render={() => (
-                <Register setUser={setUser} setUserToken={setUserToken} />
-              )}
-            ></Route>
-            <Route
-              path="/anime-details/:id/:title"
-              exact
-              render={(props) => (
-                <AnimeDetails
-                  {...props}
-                  dark_mode={
-                    typeof currentUser === "string"
-                      ? JSON.parse(currentUser).dark_mode
-                      : currentUser.dark_mode
-                  }
-                  userToken={userToken}
-                />
-              )}
-            ></Route>
-            <Route
-              path="/manga-details/:id/:title"
-              exact
-              render={(props) => (
-                <MangaDetails
-                  {...props}
-                  dark_mode={
-                    typeof currentUser === "string"
-                      ? JSON.parse(currentUser).dark_mode
-                      : currentUser.dark_mode
-                  }
-                  userToken={userToken}
-                />
-              )}
-            ></Route>
-            <Route
-              path="/character-details/:id/:title"
-              exact
-              render={(props) => (
-                <CharDetails
-                  {...props}
-                  dark_mode={
-                    typeof currentUser === "string"
-                      ? JSON.parse(currentUser).dark_mode
-                      : currentUser.dark_mode
-                  }
-                  userToken={userToken}
-                />
-              )}
-            ></Route>
-            <Route
-              path="/reset-password"
-              exact
-              render={() => <ResetPassword />}
-            ></Route>
-            <Route
-              path="/email-confirmation"
-              exact
-              render={() => <EmailConfirmation />}
-            ></Route>
+            <UserContext.Provider
+              value={
+                typeof currentUser === "string"
+                  ? JSON.parse(currentUser)
+                  : currentUser
+              }
+            >
+              <Route
+                path="/"
+                exact
+                render={() => <Home currentUser={currentUser} />}
+              ></Route>
+              <Route
+                path="/favorites"
+                exact
+                render={() => (
+                  <Favorites
+                    dark_mode={
+                      typeof currentUser === "string"
+                        ? JSON.parse(currentUser).dark_mode
+                        : currentUser.dark_mode
+                    }
+                    setUser={setUser}
+                    userToken={userToken}
+                  />
+                )}
+              ></Route>
+              <Route
+                path="/anime-list"
+                exact
+                render={() => (
+                  <AnimeList
+                    dark_mode={
+                      typeof currentUser === "string"
+                        ? JSON.parse(currentUser).dark_mode
+                        : currentUser.dark_mode
+                    }
+                    setUser={setUser}
+                    userToken={userToken}
+                  />
+                )}
+              ></Route>
+              <Route
+                path="/manga-list"
+                exact
+                render={() => (
+                  <MangaList
+                    dark_mode={
+                      typeof currentUser === "string"
+                        ? JSON.parse(currentUser).dark_mode
+                        : currentUser.dark_mode
+                    }
+                    setUser={setUser}
+                    userToken={userToken}
+                  />
+                )}
+              ></Route>
+              <Route
+                path="/character-list"
+                exact
+                render={() => (
+                  <CharList
+                    dark_mode={
+                      typeof currentUser === "string"
+                        ? JSON.parse(currentUser).dark_mode
+                        : currentUser.dark_mode
+                    }
+                    setUser={setUser}
+                    userToken={userToken}
+                  />
+                )}
+              ></Route>
+              <Route
+                path="/login"
+                exact
+                render={() => (
+                  <Login setUser={setUser} setUserToken={setUserToken} />
+                )}
+              ></Route>
+              <Route
+                path="/profile"
+                exact
+                render={() => (
+                  <Profile
+                    currentUser={
+                      typeof currentUser === "string"
+                        ? JSON.parse(currentUser)
+                        : currentUser
+                    }
+                    setUser={setUser}
+                  />
+                )}
+              ></Route>
+              <Route
+                path="/register"
+                exact
+                render={() => (
+                  <Register setUser={setUser} setUserToken={setUserToken} />
+                )}
+              ></Route>
+              <Route
+                path="/anime-details/:id/:title"
+                exact
+                render={(props) => (
+                  <AnimeDetails
+                    {...props}
+                    dark_mode={
+                      typeof currentUser === "string"
+                        ? JSON.parse(currentUser).dark_mode
+                        : currentUser.dark_mode
+                    }
+                    userToken={userToken}
+                  />
+                )}
+              ></Route>
+              <Route
+                path="/manga-details/:id/:title"
+                exact
+                render={(props) => (
+                  <MangaDetails
+                    {...props}
+                    dark_mode={
+                      typeof currentUser === "string"
+                        ? JSON.parse(currentUser).dark_mode
+                        : currentUser.dark_mode
+                    }
+                    userToken={userToken}
+                  />
+                )}
+              ></Route>
+              <Route
+                path="/character-details/:id/:title"
+                exact
+                render={(props) => (
+                  <CharDetails
+                    {...props}
+                    dark_mode={
+                      typeof currentUser === "string"
+                        ? JSON.parse(currentUser).dark_mode
+                        : currentUser.dark_mode
+                    }
+                    userToken={userToken}
+                  />
+                )}
+              ></Route>
+              <Route
+                path="/reset-password"
+                exact
+                render={() => <ResetPassword />}
+              ></Route>
+              <Route
+                path="/email-confirmation"
+                exact
+                render={() => <EmailConfirmation />}
+              ></Route>
+            </UserContext.Provider>
           </Switch>
         </BrowserRouter>
       )}

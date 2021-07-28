@@ -12,11 +12,11 @@ export default function CharDetails(props) {
   });
 
   const getCharDetails = async () => {
+    setState({
+      loading: true,
+    });
+    const { id } = props.match.params;
     try {
-      setState({
-        loading: true,
-      });
-      const { id } = props.match.params;
       const res = await fetch(
         `http://localhost:5000/api/character-details/${id}`,
         {
@@ -34,6 +34,7 @@ export default function CharDetails(props) {
           message: character.message,
         });
       } else if (res.status === 200) {
+        console.log(character);
         setState({
           loading: false,
           character: character,
@@ -61,7 +62,14 @@ export default function CharDetails(props) {
             "container animeDetails-container " + (dark_mode ? "darkBG" : "")
           }
         >
-          <Link to="/character-list" exact>
+          <Link
+            to={
+              props.location.backURL
+                ? props.location.backURL
+                : "/character-list"
+            }
+            exact
+          >
             <i
               className={
                 "fas fa-arrow-left fa-3x position-absolute " +

@@ -7,29 +7,85 @@ import AuthError from "./AuthError";
 import "../App.css";
 
 export default function AnimeList(props) {
-  const { dark_mode, userToken } = props;
+  const { dark_mode, userToken, setUser } = props;
   const [state, setState] = useState({
     message: "",
-    animes: [],
     filteredAnimes: [],
     loading: true,
     page: 1,
     hasMore: true,
-    currentFilter: "anime",
   });
 
-  const handleSearch = async (e, inputVal, searchState) => {
+  const handleFilter = async (e, filters) => {
+    e.preventDefault();
+    if (filters.length === 0) {
+      return;
+    }
+    setState({
+      ...state,
+      loading: true,
+    });
+    let genreIds = "";
+    filters.forEach((genre) => {
+      if (genre.selected) {
+        genreIds += genre.id + ",";
+      }
+    });
+    let page = 0;
+    if (state.genreFiltered) {
+      page = state.page;
+    } else {
+      page = 1;
+    }
+    console.log(page);
+    genreIds = genreIds.slice(0, -1);
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/search?type=anime&genreIds=${genreIds}&page=${page}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            "auth-token": props.userToken,
+          },
+        }
+      );
+      const data = await res.json();
+      console.log(data);
+      if (res.status !== 200) {
+        setState({
+          message: res.message,
+          loading: false,
+        });
+      } else if (res.status === 200) {
+        setState({
+          ...state,
+          filteredAnimes: [...data.results],
+          loading: false,
+          page: state.page + 1,
+        });
+      }
+    } catch (err) {
+      setState({
+        message: "Unable to find any animes that contain those genres",
+        loading: false,
+        hasMore: false,
+      });
+    }
+  };
+
+  const handleSearch = async (e, inputVal) => {
     e.preventDefault();
     const searchVal = inputVal;
     if (searchVal.length === 0) {
       return;
     }
+    setState({
+      ...state,
+      hasMore: false,
+      loading: true,
+    });
     try {
-      setState({
-        ...state,
-        hasMore: false,
-        loading: true,
-      });
       const res = await fetch(
         `http://localhost:5000/api/anime-list/search?title=${searchVal}`,
         {
@@ -62,22 +118,20 @@ export default function AnimeList(props) {
     }
   };
 
-  const getAnimes = async (filterType) => {
+  const getAnimes = async () => {
     try {
       setState({
         ...state,
         loading: true,
       });
-      let type = "";
-      if (filterType) {
-        type = filterType;
+      let page = 0;
+      if (state.genreFiltered) {
+        page = 1;
       } else {
-        type = "anime";
+        page = state.page;
       }
-      const page = state.page;
-      const subtype = "bypopularity";
       const res = await fetch(
-        `http://localhost:5000/api/anime-list?subtype=${subtype}&page=${page}`,
+        `http://localhost:5000/api/anime-list?&page=${page}`,
         {
           method: "GET",
           headers: {
@@ -131,17 +185,6 @@ export default function AnimeList(props) {
   } else if (!userToken) {
     return <AuthError />;
   } else {
-    let columns = [];
-    state.filteredAnimes.forEach((anime, idx) => {
-      columns.push(
-        <div className="col-4 mt-4 mb-4" key={idx}>
-          <Card dark_mode={dark_mode} anime={anime} />
-        </div>
-      );
-      if ((idx + 1) % 3 === 0) {
-        columns.push(<div className="w-100" key={idx + 200}></div>);
-      }
-    });
     return (
       <div
         className={
@@ -151,7 +194,9 @@ export default function AnimeList(props) {
         <Search
           resultsLength={state.filteredAnimes.length}
           handleSearch={handleSearch}
+          handleFilter={handleFilter}
           dark_mode={dark_mode}
+          currentPage="/anime-list"
         />
         {state.message ? (
           <p className="text-danger mt-5">{state.message}</p>
@@ -163,7 +208,15 @@ export default function AnimeList(props) {
           dataLength={state.filteredAnimes.length}
           hasMore={state.hasMore}
         >
-          {<div className="row">{columns}</div>}
+          <div className="card-deck">
+            {state.filteredAnimes.map((anime, idx) => {
+              return (
+                <div className="col-4 mt-4 mb-4" key={idx}>
+                  <Card dark_mode={dark_mode} anime={anime} setUser={setUser} />
+                </div>
+              );
+            })}
+          </div>
         </InfiniteScroll>
         {state.hasMore ? (
           <button

@@ -9,15 +9,18 @@ export default function MangaDetails(props) {
     message: "",
     loading: false,
     manga: {},
+    genres: "",
+    authors: "",
+    published: "",
   });
 
   const getMangaDetails = async () => {
+    setState({
+      ...state,
+      loading: true,
+    });
+    const { id } = props.match.params;
     try {
-      setState({
-        ...state,
-        loading: true,
-      });
-      const { id } = props.match.params;
       const res = await fetch(`http://localhost:5000/api/manga-details/${id}`, {
         method: "GET",
         headers: {
@@ -32,10 +35,24 @@ export default function MangaDetails(props) {
           message: manga.message,
         });
       } else if (res.status === 200) {
+        let genres = "";
+        manga.genres.forEach((genre) => {
+          genres += genre.name + ", ";
+        });
+        let authors = "";
+        manga.authors.forEach((author) => {
+          authors += author.name + ", ";
+        });
+        genres = genres.slice(0, -1);
+        authors = authors.slice(0, -1);
+        console.log(manga);
         setState({
           ...state,
           loading: false,
           manga: manga,
+          genres: genres.slice(0, -1),
+          authors: authors.slice(0, -1),
+          published: manga.published.string,
         });
       }
     } catch (err) {
@@ -60,7 +77,10 @@ export default function MangaDetails(props) {
             "container animeDetails-container " + (dark_mode ? "darkBG" : "")
           }
         >
-          <Link to="/manga-list" exact>
+          <Link
+            to={props.location.backURL ? props.location.backURL : "/manga-list"}
+            exact
+          >
             <i
               className={
                 "fas fa-arrow-left fa-3x position-absolute " +
@@ -87,13 +107,20 @@ export default function MangaDetails(props) {
               >
                 <div className="card-body">
                   <h5 className="card-title pt-2">{manga.title}</h5>
-                  <h5 className="card-title pb-2">
-                    English Title: {manga.title_english}
-                  </h5>
+                  <p className="card-text pb-2">
+                    {manga.title === manga.title_english
+                      ? "Japanese Title: " + manga.title_japanese
+                      : "English Title: " + manga.title_english}
+                  </p>
+                  <p className="card-text">Authors: {state.authors}</p>
                   <h6 className="card-title pt-3">Volumes: {manga.volumes}</h6>
                   <h6 className="card-title pb-4">
                     Chapters: {manga.chapters}
                   </h6>
+                  <h6 className="card-title pt-3">
+                    Published From: {state.published}
+                  </h6>
+                  <p className="card-text">Genres: {state.genres}</p>
                   <p className="card-text mb-3">{manga.synopsis}</p>
                 </div>
               </div>

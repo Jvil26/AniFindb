@@ -42,7 +42,7 @@ router.post("/register", async (req, res) => {
       email: req.body.email.toLowerCase(),
       password: hashedPassword,
       dark_mode: false,
-      watchList: [],
+      favorites: [],
     });
     const savedUser = await user.save();
     const token = jwt.sign(savedUser.toJSON(), process.env.ACCESS_TOKEN_SECRET);
@@ -155,6 +155,45 @@ router.post("/reset-password", async (req, res) => {
     return res.send({ message: "Password has been reset!" });
   } catch (err) {
     return res.status(400).send({ message: "Failed to reset password" });
+  }
+});
+
+router.post("/favorites/add", async (req, res) => {
+  const item = req.body.item;
+  const userID = req.body.userID;
+  const category = req.body.category;
+  try {
+    const user = await User.findById(userID);
+    const obj = {
+      category: category,
+      title: item.title,
+      length: item.episodes,
+      mal_id: item.mal_id,
+      priority: user.favorites.length + 1,
+      image_url: item.image_url,
+      name_kanji: item.name_kanji ? item.name_kanji : null,
+    };
+    user.favorites.push(obj);
+    const updatedUser = await user.save();
+    res.json(updatedUser);
+  } catch (err) {
+    res.sendStatus(400);
+  }
+});
+
+router.delete("/favorites/remove", async (req, res) => {
+  const removeItem = req.body.item;
+  const userID = req.body.userID;
+  const category = req.body.category;
+  try {
+    const user = await User.findById(userID);
+    user.favorites = user.favorites.filter(
+      (item) => item.category !== category && item.mal_id !== removeItem.mal_id
+    );
+    const updatedUser = await user.save();
+    res.json(updatedUser);
+  } catch (err) {
+    res.sendStatus(400);
   }
 });
 

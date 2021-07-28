@@ -23,13 +23,15 @@ const userSchema = new mongoose.Schema(
     dark_mode: {
       type: Boolean,
     },
-    watchList: [
+    favorites: [
       {
         category: { type: String },
         title: { type: String },
         length: { type: Number },
         mal_id: { type: Number },
         priority: { type: Number },
+        image_url: { type: String },
+        name_kanji: { type: String },
       },
     ],
   },

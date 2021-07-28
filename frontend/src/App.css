@@ -127,6 +127,25 @@
   margin-bottom: 5px;
 }
 
+.genres_row {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.genres_columns {
+  display: inline-block;
+  margin-right: 2%;
+  padding-right: 1%;
+  vertical-align: middle;
+  float: none;
+}
+
+.fa-star {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+}
+
 .fabutton {
   background: none;
   padding: 0px;
