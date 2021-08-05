@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { anime_genres, manga_genres } from "../Filter_helpers";
-import "../App.css";
+import { anime_genres, manga_genres } from "../../FilterGenres";
+import "../../App.css";
 
 const initState = {
   genreFilters: [],

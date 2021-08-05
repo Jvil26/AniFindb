@@ -1,14 +1,18 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import "../App.css";
-import UserContext from "../UserContext";
 
-import AuthError from "./AuthError";
+import "../../App.css";
+
+import UserContext from "../../UserContext";
+import SetUserContext from "../../SetUserContext";
+
+import AuthError from "../Auth-Views/AuthError";
 
 export default function Card(props) {
-  const { anime, manga, character, dark_mode, setUser } = props;
+  const { anime, manga, character, dark_mode } = props;
 
   const currentUser = useContext(UserContext);
+  const setUser = useContext(SetUserContext);
 
   const [state, setState] = useState({
     username: "",
@@ -17,8 +21,13 @@ export default function Card(props) {
     favorite: false,
   });
 
+  const [hover, setHover] = useState(false);
+
+  const handleCardHover = () => {
+    setHover(!hover);
+  };
+
   const addToFavorites = async (e, item, category) => {
-    e.preventDefault();
     try {
       const res = await fetch("http://localhost:5000/users/favorites/add", {
         method: "POST",
@@ -33,30 +42,28 @@ export default function Card(props) {
       });
       const user = await res.json();
       if (res.status === 200) {
+        localStorage.setItem("user", JSON.stringify(user));
+        setUser(user);
         setState({
+          ...state,
           success: true,
           favorite: true,
         });
       }
-      localStorage.setItem("user", JSON.stringify(user));
-      setUser(user);
-      console.log(user);
     } catch (err) {
       setState({
         success: false,
       });
-      console.log(err);
     }
   };
 
   const removeFavorite = async (e, item, category) => {
-    e.preventDefault();
     try {
       const res = await fetch("http://localhost:5000/users/favorites/remove", {
         method: "DELETE",
         body: JSON.stringify({
           userID: currentUser._id,
-          item: item,
+          mal_id: item.mal_id,
           category: category,
         }),
         headers: {
@@ -65,19 +72,16 @@ export default function Card(props) {
       });
       const user = await res.json();
       if (res.status === 200) {
+        localStorage.setItem("user", JSON.stringify(user));
+        setUser(user);
         setState({
+          ...state,
           success: true,
           favorite: false,
         });
       }
-      localStorage.setItem("user", JSON.stringify(user));
-      setUser(user);
-      console.log(user);
     } catch (err) {
-      setState({
-        success: false,
-      });
-      console.log(err);
+      throw err;
     }
   };
 
@@ -106,7 +110,15 @@ export default function Card(props) {
   if (currentUser) {
     if (anime) {
       return (
-        <div className={"card " + (dark_mode ? "dark2BG text-white" : "")}>
+        <div
+          className={
+            "card " +
+            (dark_mode ? "dark2BG text-white " : " ") +
+            (hover ? "shadow-lg" : "shadow")
+          }
+          onMouseEnter={handleCardHover}
+          onMouseLeave={handleCardHover}
+        >
           <img
             src={anime.image_url}
             className="card-img-top rounded"
@@ -119,9 +131,17 @@ export default function Card(props) {
             ) : (
               <p></p>
             )}{" "}
-            <p className="card-text">Start: {anime.start_date}</p>
             <p className="card-text">
-              End: {anime.end_date ? anime.end_date : "N/A"}
+              Start:{" "}
+              {anime.start_date && anime.start_date.length > 20
+                ? anime.start_date.substring(0, 10)
+                : anime.start_date}
+            </p>
+            <p className="card-text">
+              End:{" "}
+              {anime.end_date && anime.end_date.length > 20
+                ? anime.end_date.substring(0, 10)
+                : anime.end_date}
             </p>
             <p className="card-text">Episodes: {anime.episodes}</p>
             <Link
@@ -136,13 +156,13 @@ export default function Card(props) {
             </Link>
             {state.favorite ? (
               <i
-                className="fas fa-star fa-1x mr-1 mb-1"
+                className="fas fa-star fa-2x mr-1 mb-1"
                 type="button"
                 onClick={(e) => removeFavorite(e, anime, "anime")}
               ></i>
             ) : (
               <i
-                className="far fa-star fa-1x mr-1 mb-1"
+                className="far fa-star fa-2x mr-1 mb-1"
                 type="button"
                 onClick={(e) => addToFavorites(e, anime, "anime")}
               ></i>
@@ -152,7 +172,15 @@ export default function Card(props) {
       );
     } else if (manga) {
       return (
-        <div className={"card " + (dark_mode ? "dark2BG text-white" : "")}>
+        <div
+          className={
+            "card " +
+            (dark_mode ? "dark2BG text-white" : "") +
+            (hover ? "shadow-lg" : "shadow")
+          }
+          onMouseEnter={handleCardHover}
+          onMouseLeave={handleCardHover}
+        >
           <img
             src={manga.image_url}
             className="card-img-top rounded"
@@ -184,13 +212,13 @@ export default function Card(props) {
             </Link>
             {state.favorite ? (
               <i
-                className="fas fa-star fa-1x mr-1 mb-1"
+                className="fas fa-star fa-2x mr-1 mb-1"
                 type="button"
                 onClick={(e) => removeFavorite(e, manga, "manga")}
               ></i>
             ) : (
               <i
-                className="far fa-star fa-1x mr-1 mb-1"
+                className="far fa-star fa-2x mr-1 mb-1"
                 type="button"
                 onClick={(e) => addToFavorites(e, manga, "manga")}
               ></i>
@@ -200,7 +228,15 @@ export default function Card(props) {
       );
     } else {
       return (
-        <div className={"card " + (dark_mode ? "dark2BG text-white" : "")}>
+        <div
+          className={
+            "card " +
+            (dark_mode ? "dark2BG text-white" : "") +
+            (hover ? "shadow-lg" : "shadow")
+          }
+          onMouseEnter={handleCardHover}
+          onMouseLeave={handleCardHover}
+        >
           <img
             src={character.image_url}
             className="card-img-top rounded"
@@ -232,13 +268,13 @@ export default function Card(props) {
             </Link>
             {state.favorite ? (
               <i
-                className="fas fa-star fa-1x mr-1 mb-1"
+                className="fas fa-star fa-2x mr-1 mb-1"
                 type="button"
                 onClick={(e) => removeFavorite(e, character, "character")}
               ></i>
             ) : (
               <i
-                className="far fa-star fa-1x mr-1 mb-1"
+                className="far fa-star fa-2x mr-1 mb-1"
                 type="button"
                 onClick={(e) => addToFavorites(e, character, "character")}
               ></i>

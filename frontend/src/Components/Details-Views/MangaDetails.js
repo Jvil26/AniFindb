@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Loader from "react-loader-spinner";
 import { Link } from "react-router-dom";
-import AuthError from "./AuthError";
-import "../App.css";
+import AuthError from "../Auth-Views/AuthError";
+
+import UserContext from "../../UserContext";
+import SetUserContext from "../../SetUserContext";
+
+import "../../App.css";
 
 export default function MangaDetails(props) {
   const [state, setState] = useState({
@@ -12,7 +16,69 @@ export default function MangaDetails(props) {
     genres: "",
     authors: "",
     published: "",
+    favorite: false,
   });
+
+  const currentUser = useContext(UserContext);
+  const setUser = useContext(SetUserContext);
+
+  const addToFavorites = async (e, item, category) => {
+    try {
+      const res = await fetch("http://localhost:5000/users/favorites/add", {
+        method: "POST",
+        body: JSON.stringify({
+          userID: currentUser._id,
+          item: item,
+          category: category,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+      const user = await res.json();
+      if (res.status === 200) {
+        localStorage.setItem("user", JSON.stringify(user));
+        setUser(user);
+        setState({
+          ...state,
+          success: true,
+          favorite: true,
+        });
+      }
+    } catch (err) {
+      setState({
+        success: false,
+      });
+    }
+  };
+
+  const removeFavorite = async (e, item, category) => {
+    try {
+      const res = await fetch("http://localhost:5000/users/favorites/remove", {
+        method: "DELETE",
+        body: JSON.stringify({
+          userID: currentUser._id,
+          mal_id: item.mal_id,
+          category: category,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+      const user = await res.json();
+      if (res.status === 200) {
+        localStorage.setItem("user", JSON.stringify(user));
+        setUser(user);
+        setState({
+          ...state,
+          success: true,
+          favorite: false,
+        });
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
 
   const getMangaDetails = async () => {
     setState({
@@ -45,7 +111,6 @@ export default function MangaDetails(props) {
         });
         genres = genres.slice(0, -1);
         authors = authors.slice(0, -1);
-        console.log(manga);
         setState({
           ...state,
           loading: false,
@@ -53,6 +118,11 @@ export default function MangaDetails(props) {
           genres: genres.slice(0, -1),
           authors: authors.slice(0, -1),
           published: manga.published.string,
+          favorite: currentUser.favorites.some((item) =>
+            item.mal_id === manga.mal_id && item.category === "manga"
+              ? true
+              : null
+          ),
         });
       }
     } catch (err) {
@@ -83,7 +153,7 @@ export default function MangaDetails(props) {
           >
             <i
               className={
-                "fas fa-arrow-left fa-3x position-absolute " +
+                "fas fa-arrow-left fa-3x " +
                 (dark_mode ? "text-light" : "text-dark")
               }
             ></i>
@@ -101,11 +171,24 @@ export default function MangaDetails(props) {
             <div>
               <div
                 className={
-                  "card card-details mx-auto mb-5 mt-5 " +
+                  "card card-details mx-auto mb-5 mt-5 shadow-lg " +
                   (dark_mode ? "dark2BG text-white" : "")
                 }
               >
                 <div className="card-body">
+                  {state.favorite ? (
+                    <i
+                      className="fas fa-star fa-2x mr-1 mb-1 details-fav-icon"
+                      type="button"
+                      onClick={(e) => removeFavorite(e, manga, "manga")}
+                    ></i>
+                  ) : (
+                    <i
+                      className="far fa-star fa-2x mr-1 mb-1 details-fav-icon"
+                      type="button"
+                      onClick={(e) => addToFavorites(e, manga, "manga")}
+                    ></i>
+                  )}
                   <h5 className="card-title pt-2">{manga.title}</h5>
                   <p className="card-text pb-2">
                     {manga.title === manga.title_english
@@ -113,9 +196,11 @@ export default function MangaDetails(props) {
                       : "English Title: " + manga.title_english}
                   </p>
                   <p className="card-text">Authors: {state.authors}</p>
-                  <h6 className="card-title pt-3">Volumes: {manga.volumes}</h6>
+                  <h6 className="card-title pt-3">
+                    Volumes: {manga.volumes ? manga.volumes : "N/A"}
+                  </h6>
                   <h6 className="card-title pb-4">
-                    Chapters: {manga.chapters}
+                    Chapters: {manga.chapters ? manga.chapters : "N/A"}
                   </h6>
                   <h6 className="card-title pt-3">
                     Published From: {state.published}

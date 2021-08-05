@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
 import Loader from "react-loader-spinner";
-import "../App.css";
+import "../../App.css";
 
 export default function EmailConfirmation(props) {
   const [state, setState] = useState({
@@ -41,14 +40,7 @@ export default function EmailConfirmation(props) {
         }
       );
       const data = await res.json();
-      if (res.status !== 200) {
-        setState({
-          ...state,
-          message: data.message,
-          loading: false,
-          success: false,
-        });
-      } else if (res.status === 200) {
+      if (res.status === 200) {
         setState({
           ...state,
           success: true,
@@ -59,6 +51,7 @@ export default function EmailConfirmation(props) {
       }
     } catch (err) {
       setState({
+        ...state,
         message: "Failed to send email. Try again later.",
         loading: false,
         success: false,

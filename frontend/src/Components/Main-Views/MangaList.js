@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Loader from "react-loader-spinner";
-import Search from "./Search";
+import Search from "../Utilities/Search";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Card from "./Card";
-import AuthError from "./AuthError";
-import "../App.css";
+import Card from "../Utilities/Card";
+import AuthError from "../Auth-Views/AuthError";
+
+import SetUserContext from "../../SetUserContext";
+
+import "../../App.css";
 
 export default function MangaList(props) {
   const [state, setState] = useState({
@@ -15,6 +18,8 @@ export default function MangaList(props) {
     hasMore: true,
     currentFilter: "manga",
   });
+
+  const setUser = useContext(SetUserContext);
 
   const handleFilter = async (e, filters) => {
     e.preventDefault();
@@ -31,13 +36,7 @@ export default function MangaList(props) {
         genreIds += genre.id + ",";
       }
     });
-    let page = 0;
-    if (state.genreFiltered) {
-      page = state.page;
-    } else {
-      page = 1;
-    }
-    console.log(page);
+    let page = 1;
     genreIds = genreIds.slice(0, -1);
     try {
       const res = await fetch(
@@ -51,13 +50,7 @@ export default function MangaList(props) {
         }
       );
       const data = await res.json();
-      console.log(data);
-      if (res.status !== 200) {
-        setState({
-          message: res.message,
-          loading: false,
-        });
-      } else if (res.status === 200) {
+      if (res.status === 200) {
         setState({
           ...state,
           filteredMangas: [...data.results],
@@ -97,12 +90,7 @@ export default function MangaList(props) {
         }
       );
       const data = await res.json();
-      if (res.status !== 200) {
-        setState({
-          message: data.message,
-          loading: false,
-        });
-      } else if (res.status === 200) {
+      if (res.status === 200) {
         setState({
           ...state,
           filteredMangas: [...data.results],
@@ -120,11 +108,11 @@ export default function MangaList(props) {
   };
 
   const getMangas = async () => {
-    const page = state.page;
     setState({
       ...state,
       loading: true,
     });
+    const page = state.page;
     try {
       const res = await fetch(
         `http://localhost:5000/api/manga-list?&page=${page}`,
@@ -164,7 +152,7 @@ export default function MangaList(props) {
     getMangas();
   }, []);
 
-  const { dark_mode, userToken, setUser } = props;
+  const { dark_mode, userToken } = props;
   if (state.loading) {
     return (
       <div
@@ -209,7 +197,7 @@ export default function MangaList(props) {
             {state.filteredMangas.map((manga, idx) => {
               return (
                 <div className="col-4 mt-4 mb-4" key={idx}>
-                  <Card dark_mode={dark_mode} manga={manga} setUser={setUser} />
+                  <Card dark_mode={dark_mode} manga={manga} />
                 </div>
               );
             })}

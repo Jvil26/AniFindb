@@ -1,17 +1,25 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import "../App.css";
-import UserContext from "../UserContext";
+import "../../App.css";
 
-import AuthError from "./AuthError";
+import UserContext from "../../UserContext";
+import SetUserContext from "../../SetUserContext";
+
+import AuthError from "../Auth-Views/AuthError";
 
 export default function FavoriteCard(props) {
-  const { favoriteItem, dark_mode, setUser } = props;
+  const { favoriteItem, dark_mode } = props;
 
   const currentUser = useContext(UserContext);
+  const setUser = useContext(SetUserContext);
+
+  const [hover, setHover] = useState(false);
+
+  const handleCardHover = () => {
+    setHover(!hover);
+  };
 
   const removeFavorite = async (e, item, category) => {
-    e.preventDefault();
     try {
       const res = await fetch("http://localhost:5000/users/favorites/remove", {
         method: "DELETE",
@@ -30,14 +38,22 @@ export default function FavoriteCard(props) {
         setUser(user);
       }
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   };
 
   if (currentUser) {
     if (favoriteItem.category === "anime") {
       return (
-        <div className={"card " + (dark_mode ? "dark2BG text-white" : "")}>
+        <div
+          className={
+            "card " +
+            (dark_mode ? "dark2BG text-white " : " ") +
+            (hover ? "shadow-lg" : "shadow")
+          }
+          onMouseEnter={handleCardHover}
+          onMouseLeave={handleCardHover}
+        >
           <img
             src={favoriteItem.image_url}
             className="card-img-top rounded"
@@ -56,13 +72,9 @@ export default function FavoriteCard(props) {
                 backURL: "/favorites",
               }}
             >
-              <div className="row row d-flex justify-content-center">
-                <div className="col-6">
-                  <button type="button" className="btn btn-primary mt-3">
-                    Learn More
-                  </button>
-                </div>
-              </div>
+              <button type="button" className="btn btn-primary mt-3">
+                Learn More
+              </button>
             </Link>
             <div className="row row d-flex justify-content-center">
               <div className="col-6">
@@ -80,7 +92,15 @@ export default function FavoriteCard(props) {
       );
     } else if (favoriteItem.category === "manga") {
       return (
-        <div className={"card " + (dark_mode ? "dark2BG text-white" : "")}>
+        <div
+          className={
+            "card " +
+            (dark_mode ? "dark2BG text-white " : " ") +
+            (hover ? "shadow-lg" : "shadow")
+          }
+          onMouseEnter={handleCardHover}
+          onMouseLeave={handleCardHover}
+        >
           <img
             src={favoriteItem.image_url}
             className="card-img-top rounded"
@@ -103,7 +123,7 @@ export default function FavoriteCard(props) {
             >
               <div className="row row d-flex justify-content-center">
                 <div className="col-6">
-                  <button type="button" className="btn btn-primary mt-3">
+                  <button type="button" className="btn btn-primary btn-sm mt-3">
                     Learn More
                   </button>
                 </div>
@@ -125,7 +145,15 @@ export default function FavoriteCard(props) {
       );
     } else {
       return (
-        <div className={"card " + (dark_mode ? "dark2BG text-white" : "")}>
+        <div
+          className={
+            "card " +
+            (dark_mode ? "dark2BG text-white " : " ") +
+            (hover ? "shadow-lg" : "shadow")
+          }
+          onMouseEnter={handleCardHover}
+          onMouseLeave={handleCardHover}
+        >
           <img
             src={favoriteItem.image_url}
             className="card-img-top rounded"

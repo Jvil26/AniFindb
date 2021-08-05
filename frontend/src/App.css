@@ -103,9 +103,17 @@
   margin-left: 15px !important;
 }
 
+.details-fav-icon {
+  position: absolute;
+  top: 10px;
+  margin-right: 10px;
+}
+
 .fa-arrow-left {
-  top: 13%;
-  left: 5%;
+  float: left;
+  margin-top: 3%;
+  left: 4%;
+  position: relative;
 }
 
 .display-linebreak {
@@ -117,6 +125,12 @@
 .confirmEmail-form,
 .resetPassword-form {
   margin-top: 20px;
+}
+
+.fas.fa-star {
+  color: #ffff00;
+  -webkit-text-stroke-color: black;
+  -webkit-text-stroke-width: 2px;
 }
 
 .form-group {

@@ -1,11 +1,12 @@
 import React, { useState, useContext } from "react";
-import AuthError from "./AuthError";
+import AuthError from "../Auth-Views/AuthError";
 import Loader from "react-loader-spinner";
-import "../App.css";
-import UserContext from "../UserContext";
+import "../../App.css";
 
-export default function Profile(props) {
-  const { setUser } = props;
+import UserContext from "../../UserContext";
+import SetUserContext from "../../SetUserContext";
+
+export default function Profile() {
   const [state, setState] = useState({
     message: "",
     loading: false,
@@ -14,6 +15,7 @@ export default function Profile(props) {
   });
 
   const currentUser = useContext(UserContext);
+  const setUser = useContext(SetUserContext);
 
   const { loading, message, username, success } = state;
 
@@ -49,13 +51,7 @@ export default function Profile(props) {
         },
       });
       const data = await res.json();
-      if (res.status !== 200) {
-        setState({
-          ...state,
-          message: data.message,
-          success: false,
-        });
-      } else if (res.status === 200) {
+      if (res.status === 200) {
         localStorage.setItem("user", JSON.stringify(data.savedUser));
         setUser(data.savedUser);
         setState({
@@ -81,9 +77,6 @@ export default function Profile(props) {
             (currentUser.dark_mode ? "darkBG text-white" : "")
           }
         >
-          <p class="mt-5">
-            Account Created On: {currentUser.createdAt.substring(0, 10)}
-          </p>
           <form className="edit-profile-form" onSubmit={(e) => handleSave(e)}>
             <div className="form-group custom-control custom-switch mt-5 mb-5">
               <input
@@ -97,6 +90,9 @@ export default function Profile(props) {
                 <span>Dark Mode</span>
               </label>
             </div>
+            <p className="mb-5">
+              Account Created On: {currentUser.createdAt.substring(0, 10)}
+            </p>
             <p>Username: {currentUser.username}</p>
             <div className="form-group row d-flex justify-content-center mt-5">
               <div className="col-6">

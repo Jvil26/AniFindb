@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Redirect, Link } from "react-router-dom";
 import Loader from "react-loader-spinner";
-import "../App.css";
+import "../../App.css";
 
-export default function Register(props) {
+import SetUserContext from "../../SetUserContext";
+
+export default function Register({ setUserToken }) {
   const [state, setState] = useState({
     username: "",
     password: "",
@@ -12,6 +14,8 @@ export default function Register(props) {
     loading: false,
     loggedIn: false,
   });
+
+  const setUser = useContext(SetUserContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,12 +26,11 @@ export default function Register(props) {
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+    setState({
+      loading: true,
+    });
     try {
-      e.preventDefault();
-      setState({
-        loading: true,
-      });
-      console.log(state);
       const res = await fetch("http://localhost:5000/users/register", {
         method: "POST",
         body: JSON.stringify({
@@ -41,17 +44,11 @@ export default function Register(props) {
       });
       const { status } = res;
       const data = await res.json();
-      if (status !== 200) {
-        setState({
-          ...state,
-          message: data.message,
-          loading: false,
-        });
-      } else if (status === 200) {
+      if (status === 200) {
         localStorage.setItem("user", data.user);
         localStorage.setItem("accessToken", data.accessToken);
-        props.setUser(data.user);
-        props.setUserToken(data.accessToken);
+        setUser(data.user);
+        setUserToken(data.accessToken);
         setState({
           loggedIn: true,
           loading: false,
@@ -60,10 +57,9 @@ export default function Register(props) {
     } catch (err) {
       setState({
         ...state,
-        message: "Error in registering. Try again later.",
+        message: "Unable to register. Try again later.",
         loading: false,
       });
-      throw err;
     }
   };
 

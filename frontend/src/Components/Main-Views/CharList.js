@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Loader from "react-loader-spinner";
-import Search from "./Search";
+import Search from "../Utilities/Search";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Card from "./Card";
-import AuthError from "./AuthError";
-import "../App.css";
+import Card from "../Utilities/Card";
+import AuthError from "../Auth-Views/AuthError";
+
+import SetUserContext from "../../SetUserContext";
+
+import "../../App.css";
 
 export default function CharList(props) {
   const [state, setState] = useState({
@@ -15,6 +18,8 @@ export default function CharList(props) {
     hasMore: true,
     currentFilter: "manga",
   });
+
+  const setUser = useContext(SetUserContext);
 
   const handleSearch = async (e, inputVal) => {
     e.preventDefault();
@@ -38,12 +43,7 @@ export default function CharList(props) {
         }
       );
       const data = await res.json();
-      if (res.status !== 200) {
-        setState({
-          message: data.message,
-          loading: false,
-        });
-      } else if (res.status === 200) {
+      if (res.status === 200) {
         setState({
           ...state,
           filteredChars: [...data.results],
@@ -60,11 +60,11 @@ export default function CharList(props) {
   };
 
   const getChars = async () => {
+    setState({
+      loading: true,
+    });
+    const page = state.page;
     try {
-      setState({
-        loading: true,
-      });
-      const page = state.page;
       const res = await fetch(
         `http://localhost:5000/api/character-list?page=${page}`,
         {
@@ -76,12 +76,7 @@ export default function CharList(props) {
         }
       );
       const characters = await res.json();
-      if (res.status !== 200) {
-        setState({
-          message: res.message,
-          loading: false,
-        });
-      } else if (res.status === 200) {
+      if (res.status === 200) {
         setState({
           characters: [...state.filteredChars, ...characters.top],
           filteredChars: [...state.filteredChars, ...characters.top],
@@ -103,7 +98,7 @@ export default function CharList(props) {
     getChars();
   }, []);
 
-  const { dark_mode, userToken, setUser } = props;
+  const { dark_mode, userToken } = props;
   if (state.loading) {
     return (
       <div
@@ -147,11 +142,7 @@ export default function CharList(props) {
             {state.filteredChars.map((char, idx) => {
               return (
                 <div className="col-4 mt-4 mb-4" key={idx}>
-                  <Card
-                    dark_mode={dark_mode}
-                    character={char}
-                    setUser={setUser}
-                  />
+                  <Card dark_mode={dark_mode} character={char} />
                 </div>
               );
             })}

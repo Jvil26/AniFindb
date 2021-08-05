@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Loader from "react-loader-spinner";
-import Search from "./Search";
-import Card from "./Card";
+import Search from "../Utilities/Search";
+import Card from "../Utilities/Card";
 import InfiniteScroll from "react-infinite-scroll-component";
-import AuthError from "./AuthError";
-import "../App.css";
+import AuthError from "../Auth-Views/AuthError";
+
+import "../../App.css";
 
 export default function AnimeList(props) {
-  const { dark_mode, userToken, setUser } = props;
+  const { dark_mode, userToken } = props;
   const [state, setState] = useState({
     message: "",
     filteredAnimes: [],
@@ -31,13 +32,7 @@ export default function AnimeList(props) {
         genreIds += genre.id + ",";
       }
     });
-    let page = 0;
-    if (state.genreFiltered) {
-      page = state.page;
-    } else {
-      page = 1;
-    }
-    console.log(page);
+    let page = 1;
     genreIds = genreIds.slice(0, -1);
     try {
       const res = await fetch(
@@ -51,13 +46,7 @@ export default function AnimeList(props) {
         }
       );
       const data = await res.json();
-      console.log(data);
-      if (res.status !== 200) {
-        setState({
-          message: res.message,
-          loading: false,
-        });
-      } else if (res.status === 200) {
+      if (res.status === 200) {
         setState({
           ...state,
           filteredAnimes: [...data.results],
@@ -97,12 +86,7 @@ export default function AnimeList(props) {
         }
       );
       const data = await res.json();
-      if (res.status !== 200) {
-        setState({
-          message: res.message,
-          loading: false,
-        });
-      } else if (res.status === 200) {
+      if (res.status === 200) {
         setState({
           ...state,
           filteredAnimes: [...data.results],
@@ -124,12 +108,7 @@ export default function AnimeList(props) {
         ...state,
         loading: true,
       });
-      let page = 0;
-      if (state.genreFiltered) {
-        page = 1;
-      } else {
-        page = state.page;
-      }
+      let page = state.page;
       const res = await fetch(
         `http://localhost:5000/api/anime-list?&page=${page}`,
         {
@@ -141,12 +120,7 @@ export default function AnimeList(props) {
         }
       );
       const animes = await res.json();
-      if (res.status !== 200) {
-        setState({
-          message: animes.message,
-          loading: false,
-        });
-      } else if (res.status === 200) {
+      if (res.status === 200) {
         setState({
           ...state,
           filteredAnimes: [...state.filteredAnimes, ...animes.top],
@@ -212,7 +186,7 @@ export default function AnimeList(props) {
             {state.filteredAnimes.map((anime, idx) => {
               return (
                 <div className="col-4 mt-4 mb-4" key={idx}>
-                  <Card dark_mode={dark_mode} anime={anime} setUser={setUser} />
+                  <Card dark_mode={dark_mode} anime={anime} />
                 </div>
               );
             })}

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import "../App.css";
+import "../../App.css";
 export default function Navbar(props) {
   const { currentUser, logOut } = props;
   return (

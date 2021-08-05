@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Loader from "react-loader-spinner";
-import "../App.css";
+import "../../App.css";
 
 export default function ResetPassword() {
   const [state, setState] = useState({
@@ -36,14 +36,7 @@ export default function ResetPassword() {
         },
       });
       const data = await res.json();
-      if (res.status !== 200) {
-        setState({
-          ...state,
-          message: data.message,
-          loading: false,
-          success: false,
-        });
-      } else if (res.status === 200) {
+      if (res.status === 200) {
         setState({
           ...state,
           message: data.message,

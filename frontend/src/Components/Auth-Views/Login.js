@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Redirect, Link } from "react-router-dom";
 import Loader from "react-loader-spinner";
-import "../App.css";
+import "../../App.css";
+
+import SetUserContext from "../../SetUserContext";
 
 export default function Login(props) {
   const [state, setState] = useState({
@@ -12,6 +14,8 @@ export default function Login(props) {
     loggedIn: false,
   });
 
+  const setUser = useContext(SetUserContext);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState({
@@ -21,11 +25,11 @@ export default function Login(props) {
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+    setState({
+      loading: true,
+    });
     try {
-      e.preventDefault();
-      setState({
-        loading: true,
-      });
       const res = await fetch("http://localhost:5000/users/login", {
         method: "POST",
         body: JSON.stringify({
@@ -37,16 +41,10 @@ export default function Login(props) {
         },
       });
       const data = await res.json();
-      if (res.status !== 200) {
-        setState({
-          ...state,
-          message: data.message,
-          loading: false,
-        });
-      } else if (res.status === 200) {
+      if (res.status === 200) {
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("accessToken", data.accessToken);
-        props.setUser(data.user);
+        setUser(data.user);
         props.setUserToken(data.accessToken);
         setState({
           ...state,
@@ -57,7 +55,7 @@ export default function Login(props) {
     } catch (err) {
       setState({
         ...state,
-        message: "Error logging in. Try again later.",
+        message: "Unable to login. Try again later.",
         loading: false,
       });
     }

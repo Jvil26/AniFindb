@@ -1,13 +1,16 @@
 import React, { useContext } from "react";
-import FavoriteCard from "./FavoriteCard";
-import AuthError from "./AuthError";
-import "../App.css";
-import UserContext from "../UserContext";
+import FavoriteCard from "../Utilities/FavoriteCard";
+import AuthError from "../Auth-Views/AuthError";
+import "../../App.css";
+
+import UserContext from "../../UserContext";
+import SetUserContext from "../../SetUserContext";
 
 export default function Favorites(props) {
-  const { dark_mode, userToken, setUser } = props;
+  const { dark_mode, userToken } = props;
 
   const currentUser = useContext(UserContext);
+  const setUser = useContext(SetUserContext);
 
   if (!userToken) {
     return <AuthError />;
@@ -57,12 +60,8 @@ export default function Favorites(props) {
         );
       }
       columns.push(
-        <div className="col-4 mt-4 mb-4" key={idx}>
-          <FavoriteCard
-            dark_mode={dark_mode}
-            setUser={setUser}
-            favoriteItem={item}
-          />
+        <div className="col-3 mt-4 mb-4" key={idx}>
+          <FavoriteCard dark_mode={dark_mode} favoriteItem={item} />
         </div>
       );
       if ((index + 1) % 3 === 0) {
