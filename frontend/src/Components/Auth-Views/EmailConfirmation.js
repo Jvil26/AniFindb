@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import Loader from "react-loader-spinner";
 import "../../App.css";
 
-export default function EmailConfirmation(props) {
+export default function EmailConfirmation() {
   const [state, setState] = useState({
-    email: "",
     message: "",
     loading: false,
     confirmEmail: "",

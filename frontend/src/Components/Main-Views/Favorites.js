@@ -4,13 +4,11 @@ import AuthError from "../Auth-Views/AuthError";
 import "../../App.css";
 
 import UserContext from "../../UserContext";
-import SetUserContext from "../../SetUserContext";
 
 export default function Favorites(props) {
   const { dark_mode, userToken } = props;
 
   const currentUser = useContext(UserContext);
-  const setUser = useContext(SetUserContext);
 
   if (!userToken) {
     return <AuthError />;

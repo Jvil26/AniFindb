@@ -32,9 +32,9 @@ function App() {
   };
 
   useEffect(() => {
+    setLoading(true);
     const user = localStorage.getItem("user");
     const accessToken = localStorage.getItem("accessToken");
-    setLoading(true);
     if (user && accessToken) {
       setUser(user);
       setUserToken(accessToken);

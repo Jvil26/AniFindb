@@ -29,37 +29,36 @@ export default function Login(props) {
     setState({
       loading: true,
     });
-    try {
-      const res = await fetch("http://localhost:5000/users/login", {
-        method: "POST",
-        body: JSON.stringify({
-          username: state.username,
-          password: state.password,
-        }),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
-      const data = await res.json();
-      if (res.status === 200) {
-        localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("accessToken", data.accessToken);
-        setUser(data.user);
-        props.setUserToken(data.accessToken);
-        setState({
-          ...state,
-          loggedIn: true,
-          loading: false,
-        });
-      }
-    } catch (err) {
+    const res = await fetch("http://localhost:5000/users/login", {
+      method: "POST",
+      body: JSON.stringify({
+        username: state.username,
+        password: state.password,
+      }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+    const data = await res.json();
+    if (res.status === 200) {
+      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("accessToken", data.accessToken);
+      setUser(data.user);
+      props.setUserToken(data.accessToken);
       setState({
         ...state,
-        message: "Unable to login. Try again later.",
+        loggedIn: true,
+        loading: false,
+      });
+    } else {
+      setState({
+        ...state,
+        message: data.message,
         loading: false,
       });
     }
   };
+
   const { username, password, message, loggedIn, loading } = state;
   return (
     <div className="container login-container">

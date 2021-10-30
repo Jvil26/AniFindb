@@ -4,6 +4,7 @@ const express = require("express");
 const session = require("express-session");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const rateLimit = require("express-rate-limit");
 
 const apiRoutes = require("./routes/api");
 const usersRoutes = require("./routes/users");
@@ -42,7 +43,13 @@ mongoose.connection.on("disconnected", () => {
   console.log("Mongoose is disconnected");
 });
 
+const apiLimiter = rateLimit({
+  windowMs: 1000,
+  max: 2,
+});
+
 app.use("/api", apiRoutes);
+app.use("/api", apiLimiter);
 app.use("/users", usersRoutes);
 
 app.listen(PORT, (err) => {

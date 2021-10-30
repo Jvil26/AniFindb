@@ -16,7 +16,6 @@ function authToken(req, res, next) {
 
 router.get("/anime-list", authToken, async (req, res) => {
   const page = req.query.page;
-
   try {
     const animes = await fetch(
       `https://api.jikan.moe/v3/top/anime/${page}/bypopularity`,

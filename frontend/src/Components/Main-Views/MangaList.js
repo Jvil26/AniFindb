@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import Loader from "react-loader-spinner";
 import Search from "../Utilities/Search";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Card from "../Utilities/Card";
 import AuthError from "../Auth-Views/AuthError";
-
-import SetUserContext from "../../SetUserContext";
 
 import "../../App.css";
 
@@ -18,8 +16,6 @@ export default function MangaList(props) {
     hasMore: true,
     currentFilter: "manga",
   });
-
-  const setUser = useContext(SetUserContext);
 
   const handleFilter = async (e, filters) => {
     e.preventDefault();
