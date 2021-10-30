@@ -16,13 +16,6 @@ const PORT = process.env.PORT | 5000;
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(
-  session({
-    secret: "chase",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
 
 mongoose.connect(process.env.URI, {
   useNewUrlParser: true,
