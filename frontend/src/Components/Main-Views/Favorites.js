@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import FavoriteCard from "../Utilities/FavoriteCard";
+import FavoriteCard from "../Cards/FavoriteCard";
 import AuthError from "../Auth-Views/AuthError";
 import "../../App.css";
 
