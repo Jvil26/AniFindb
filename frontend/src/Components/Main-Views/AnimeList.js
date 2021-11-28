@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Loader from "react-loader-spinner";
-import Search from "../Utilities/Search";
-import Card from "../Utilities/Card";
+import Search from "../Utils/Search";
+import Card from "../Cards/Card";
 import InfiniteScroll from "react-infinite-scroll-component";
 import AuthError from "../Auth-Views/AuthError";
 
