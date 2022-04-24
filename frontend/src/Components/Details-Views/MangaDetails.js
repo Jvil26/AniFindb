@@ -24,17 +24,20 @@ export default function MangaDetails(props) {
 
   const addToFavorites = async (e, item, category) => {
     try {
-      const res = await fetch("http://localhost:5000/users/favorites/add", {
-        method: "POST",
-        body: JSON.stringify({
-          userID: currentUser._id,
-          item: item,
-          category: category,
-        }),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+      const res = await fetch(
+        "https://anifindb.herokuapp.com//users/favorites/add",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            userID: currentUser._id,
+            item: item,
+            category: category,
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
       const user = await res.json();
       if (res.status === 200) {
         localStorage.setItem("user", JSON.stringify(user));
@@ -54,17 +57,20 @@ export default function MangaDetails(props) {
 
   const removeFavorite = async (e, item, category) => {
     try {
-      const res = await fetch("http://localhost:5000/users/favorites/remove", {
-        method: "DELETE",
-        body: JSON.stringify({
-          userID: currentUser._id,
-          mal_id: item.mal_id,
-          category: category,
-        }),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+      const res = await fetch(
+        "https://anifindb.herokuapp.com//users/favorites/remove",
+        {
+          method: "DELETE",
+          body: JSON.stringify({
+            userID: currentUser._id,
+            mal_id: item.mal_id,
+            category: category,
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
       const user = await res.json();
       if (res.status === 200) {
         localStorage.setItem("user", JSON.stringify(user));
@@ -87,13 +93,16 @@ export default function MangaDetails(props) {
     });
     const { id } = props.match.params;
     try {
-      const res = await fetch(`http://localhost:5000/api/manga-details/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-          "auth-token": props.userToken,
-        },
-      });
+      const res = await fetch(
+        `https://anifindb.herokuapp.com//api/manga-details/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            "auth-token": props.userToken,
+          },
+        }
+      );
       const manga = await res.json();
       if (res.status !== 200) {
         setState({
