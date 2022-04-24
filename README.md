@@ -1,12 +1,14 @@
 # ANIME_MERN_APP
 
-## Running the Application
+### Online database for discovering your animes, mangas, and characters.
 
-1. Open command line in project directory
+### Features
 
-2. ```cd frontend```
-3. ```npm run start```
-4. Open another command line
-5. ```cd backend```
-6. ```nodemon server```
-7. The app will be running on http://localhost:3000/
+- Profile Page
+- Anime List
+- Manga List
+- Characters List
+- Details View
+- Favorites Page
+- Dark mode
+- Auth and Password Reset
