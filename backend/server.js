@@ -10,20 +10,30 @@ const usersRoutes = require("./routes/users");
 
 const app = express();
 
-const PORT = process.env.PORT | 8080;
+const PORT = process.env.PORT | 5000;
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-mongoose
-  .connect(process.env.URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  })
-  .then(() => console.log("mongoose connected"));
+mongoose.connect(process.env.URI, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true,
+});
+
+mongoose.connection.on("connected", () => {
+  console.log("Mongoose connected");
+});
+
+mongoose.connection.on("error", (err) => {
+  console.log(err, "Mongoose failed to connect");
+});
+
+mongoose.connection.on("disconnected", () => {
+  console.log("Mongoose is disconnected");
+});
 
 const apiLimiter = rateLimit({
   windowMs: 1000,
@@ -34,17 +44,6 @@ app.use("/api", apiRoutes);
 app.use("/api", apiLimiter);
 app.use("/users", usersRoutes);
 
-app.set("port", PORT);
-
-//For avoidong Heroku $PORT error
-app
-  .get("/", function (request, response) {
-    var result = "App is running";
-    response.send(result);
-  })
-  .listen(app.get("port"), function () {
-    console.log(
-      "App is running, server is listening on port ",
-      app.get("port")
-    );
-  });
+app.listen(PORT, (err) => {
+  console.log(err || `App is running on PORT ${PORT}`);
+});

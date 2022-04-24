@@ -28,34 +28,28 @@ export default function Register({ setUserToken }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setState({
-      ...state,
       loading: true,
     });
-    console.log(state);
     try {
-      const res = await fetch(
-        "https://anifindb.herokuapp.com//users/register",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            username: state.username,
-            password: state.password,
-            email: state.email,
-          }),
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      );
+      const res = await fetch("http://localhost:5000/users/register", {
+        method: "POST",
+        body: JSON.stringify({
+          username: state.username,
+          password: state.password,
+          email: state.email,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
       const { status } = res;
+      const data = await res.json();
       if (status === 200) {
-        const data = await res.json();
         localStorage.setItem("user", data.user);
         localStorage.setItem("accessToken", data.accessToken);
         setUser(data.user);
         setUserToken(data.accessToken);
         setState({
-          ...state,
           loggedIn: true,
           loading: false,
         });
