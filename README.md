@@ -1,4 +1,4 @@
-# ANIME_MERN_APP
+# Anifindb
 
 ### Online database for discovering your animes, mangas, and characters.
 
