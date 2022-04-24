@@ -29,17 +29,20 @@ export default function Card(props) {
 
   const addToFavorites = async (e, item, category) => {
     try {
-      const res = await fetch("http://localhost:5000/users/favorites/add", {
-        method: "POST",
-        body: JSON.stringify({
-          userID: currentUser._id,
-          item: item,
-          category: category,
-        }),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+      const res = await fetch(
+        "https://anifindb.herokuapp.com//users/favorites/add",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            userID: currentUser._id,
+            item: item,
+            category: category,
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
       const user = await res.json();
       if (res.status === 200) {
         localStorage.setItem("user", JSON.stringify(user));
@@ -59,17 +62,20 @@ export default function Card(props) {
 
   const removeFavorite = async (e, item, category) => {
     try {
-      const res = await fetch("http://localhost:5000/users/favorites/remove", {
-        method: "DELETE",
-        body: JSON.stringify({
-          userID: currentUser._id,
-          mal_id: item.mal_id,
-          category: category,
-        }),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+      const res = await fetch(
+        "https://anifindb.herokuapp.com//users/favorites/remove",
+        {
+          method: "DELETE",
+          body: JSON.stringify({
+            userID: currentUser._id,
+            mal_id: item.mal_id,
+            category: category,
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
       const user = await res.json();
       if (res.status === 200) {
         localStorage.setItem("user", JSON.stringify(user));
@@ -175,7 +181,7 @@ export default function Card(props) {
         <div
           className={
             "card " +
-            (dark_mode ? "dark2BG text-white" : "") +
+            (dark_mode ? "dark2BG text-white " : " ") +
             (hover ? "shadow-lg" : "shadow")
           }
           onMouseEnter={handleCardHover}
@@ -231,7 +237,7 @@ export default function Card(props) {
         <div
           className={
             "card " +
-            (dark_mode ? "dark2BG text-white" : "") +
+            (dark_mode ? "dark2BG text-white " : " ") +
             (hover ? "shadow-lg" : "shadow")
           }
           onMouseEnter={handleCardHover}
