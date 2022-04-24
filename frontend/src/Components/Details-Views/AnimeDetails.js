@@ -25,7 +25,7 @@ export default function AnimeDetails(props) {
   const addToFavorites = async (e, item, category) => {
     try {
       const res = await fetch(
-        "https://anifindb.herokuapp.com//users/favorites/add",
+        "https://anifindb.herokuapp.com/users/favorites/add",
         {
           method: "POST",
           body: JSON.stringify({
@@ -59,7 +59,7 @@ export default function AnimeDetails(props) {
     e.preventDefault();
     try {
       const res = await fetch(
-        "https://anifindb.herokuapp.com//users/favorites/remove",
+        "https://anifindb.herokuapp.com/users/favorites/remove",
         {
           method: "DELETE",
           body: JSON.stringify({
@@ -95,7 +95,7 @@ export default function AnimeDetails(props) {
     const { id } = props.match.params;
     try {
       const res = await fetch(
-        `https://anifindb.herokuapp.com//api/anime-details/${id}`,
+        `https://anifindb.herokuapp.com/api/anime-details/${id}`,
         {
           method: "GET",
           headers: {

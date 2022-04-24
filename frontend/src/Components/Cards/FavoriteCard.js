@@ -22,7 +22,7 @@ export default function FavoriteCard(props) {
   const removeFavorite = async (e, item, category) => {
     try {
       const res = await fetch(
-        "https://anifindb.herokuapp.com//users/favorites/remove",
+        "https://anifindb.herokuapp.com/users/favorites/remove",
         {
           method: "DELETE",
           body: JSON.stringify({

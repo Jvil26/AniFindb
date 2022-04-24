@@ -29,7 +29,7 @@ export default function CharList(props) {
     });
     try {
       const res = await fetch(
-        `https://anifindb.herokuapp.com//api/character-list/search?title=${searchVal}`,
+        `https://anifindb.herokuapp.com/api/character-list/search?title=${searchVal}`,
         {
           method: "GET",
           headers: {
@@ -62,7 +62,7 @@ export default function CharList(props) {
     const page = state.page;
     try {
       const res = await fetch(
-        `https://anifindb.herokuapp.com//api/character-list?page=${page}`,
+        `https://anifindb.herokuapp.com/api/character-list?page=${page}`,
         {
           method: "GET",
           headers: {

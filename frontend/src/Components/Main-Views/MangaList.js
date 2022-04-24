@@ -36,7 +36,7 @@ export default function MangaList(props) {
     genreIds = genreIds.slice(0, -1);
     try {
       const res = await fetch(
-        `https://anifindb.herokuapp.com//api/search?type=manga&genreIds=${genreIds}&page=${page}`,
+        `https://anifindb.herokuapp.com/api/search?type=manga&genreIds=${genreIds}&page=${page}`,
         {
           method: "GET",
           headers: {
@@ -76,7 +76,7 @@ export default function MangaList(props) {
     });
     try {
       const res = await fetch(
-        `https://anifindb.herokuapp.com//api/manga-list/search?title=${searchVal}`,
+        `https://anifindb.herokuapp.com/api/manga-list/search?title=${searchVal}`,
         {
           method: "GET",
           headers: {
@@ -111,7 +111,7 @@ export default function MangaList(props) {
     const page = state.page;
     try {
       const res = await fetch(
-        `https://anifindb.herokuapp.com//api/manga-list?&page=${page}`,
+        `https://anifindb.herokuapp.com/api/manga-list?&page=${page}`,
         {
           method: "GET",
           headers: {

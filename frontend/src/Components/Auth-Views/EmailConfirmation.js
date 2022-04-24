@@ -27,7 +27,7 @@ export default function EmailConfirmation() {
     });
     try {
       const res = await fetch(
-        "https://anifindb.herokuapp.com//users/send-confirmation-email",
+        "https://anifindb.herokuapp.com/users/send-confirmation-email",
         {
           method: "POST",
           body: JSON.stringify({

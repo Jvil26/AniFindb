@@ -40,7 +40,7 @@ export default function Profile() {
     });
     try {
       const res = await fetch(
-        "https://anifindb.herokuapp.com//users/profile/update",
+        "https://anifindb.herokuapp.com/users/profile/update",
         {
           method: "POST",
           body: JSON.stringify({
