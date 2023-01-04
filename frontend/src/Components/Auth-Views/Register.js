@@ -33,7 +33,7 @@ export default function Register({ setUserToken }) {
     });
     console.log(state);
     try {
-      const res = await fetch("https://anifindb.herokuapp.com/users/register", {
+      const res = await fetch("http://localhost:8080/users/register", {
         method: "POST",
         body: JSON.stringify({
           username: state.username,

@@ -29,7 +29,7 @@ export default function CharList(props) {
     });
     try {
       const res = await fetch(
-        `https://anifindb.herokuapp.com/api/character-list/search?title=${searchVal}`,
+        `http://localhost:8080/api/character-list/search?title=${searchVal}`,
         {
           method: "GET",
           headers: {
@@ -62,7 +62,7 @@ export default function CharList(props) {
     const page = state.page;
     try {
       const res = await fetch(
-        `https://anifindb.herokuapp.com/api/character-list?page=${page}`,
+        `http://localhost:8080/api/character-list?page=${page}`,
         {
           method: "GET",
           headers: {
@@ -72,13 +72,14 @@ export default function CharList(props) {
         }
       );
       const characters = await res.json();
+      console.log(characters.data);
       if (res.status === 200) {
         setState({
-          characters: [...state.filteredChars, ...characters.top],
-          filteredChars: [...state.filteredChars, ...characters.top],
+          characters: [...state.filteredChars, ...characters.data],
+          filteredChars: [...state.filteredChars, ...characters.data],
           loading: false,
           page: state.page + 1,
-          hasMore: true,
+          hasMore: characters.has_next_page,
         });
       }
     } catch (err) {

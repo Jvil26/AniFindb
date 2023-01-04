@@ -21,20 +21,17 @@ export default function CharDetails(props) {
 
   const addToFavorites = async (e, item, category) => {
     try {
-      const res = await fetch(
-        "https://anifindb.herokuapp.com/users/favorites/add",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            userID: currentUser._id,
-            item: item,
-            category: category,
-          }),
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      );
+      const res = await fetch("http://localhost:8080/users/favorites/add", {
+        method: "POST",
+        body: JSON.stringify({
+          userID: currentUser._id,
+          item: item,
+          category: category,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
       const user = await res.json();
       if (res.status === 200) {
         localStorage.setItem("user", JSON.stringify(user));
@@ -55,20 +52,17 @@ export default function CharDetails(props) {
   const removeFavorite = async (e, item, category) => {
     e.preventDefault();
     try {
-      const res = await fetch(
-        "https://anifindb.herokuapp.com/users/favorites/remove",
-        {
-          method: "DELETE",
-          body: JSON.stringify({
-            userID: currentUser._id,
-            mal_id: item.mal_id,
-            category: category,
-          }),
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      );
+      const res = await fetch("http://localhost:8080/users/favorites/remove", {
+        method: "DELETE",
+        body: JSON.stringify({
+          userID: currentUser._id,
+          mal_id: item.mal_id,
+          category: category,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
       const user = await res.json();
       if (res.status === 200) {
         localStorage.setItem("user", JSON.stringify(user));
@@ -91,7 +85,7 @@ export default function CharDetails(props) {
     const { id } = props.match.params;
     try {
       const res = await fetch(
-        `https://anifindb.herokuapp.com/api/character-details/${id}`,
+        `http://localhost:8080/api/character-details/${id}`,
         {
           method: "GET",
           headers: {
@@ -100,7 +94,9 @@ export default function CharDetails(props) {
           },
         }
       );
-      const character = await res.json();
+      let character = await res.json();
+      character = character.data;
+      console.log(character);
       if (res.status !== 200) {
         setState({
           loading: false,
@@ -110,10 +106,9 @@ export default function CharDetails(props) {
         setState({
           ...state,
           loading: false,
-          favorite: currentUser.favorites.some((item) =>
-            item.mal_id === character.mal_id && item.category === "character"
-              ? true
-              : null
+          favorite: currentUser.favorites.some(
+            (item) =>
+              item.mal_id === character.mal_id && item.category === "character"
           ),
           character: character,
         });
@@ -194,7 +189,7 @@ export default function CharDetails(props) {
                   <p className="display-linebreak">{character.about}</p>
                   <img
                     className="mt-4"
-                    src={character.image_url}
+                    src={character.images.jpg.image_url}
                     alt="MangaImage"
                   ></img>
                 </div>

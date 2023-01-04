@@ -29,20 +29,17 @@ export default function Card(props) {
 
   const addToFavorites = async (e, item, category) => {
     try {
-      const res = await fetch(
-        "https://anifindb.herokuapp.com/users/favorites/add",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            userID: currentUser._id,
-            item: item,
-            category: category,
-          }),
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      );
+      const res = await fetch("http://localhost:8080/users/favorites/add", {
+        method: "POST",
+        body: JSON.stringify({
+          userID: currentUser._id,
+          item: item,
+          category: category,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
       const user = await res.json();
       if (res.status === 200) {
         localStorage.setItem("user", JSON.stringify(user));
@@ -62,20 +59,17 @@ export default function Card(props) {
 
   const removeFavorite = async (e, item, category) => {
     try {
-      const res = await fetch(
-        "https://anifindb.herokuapp.com/users/favorites/remove",
-        {
-          method: "DELETE",
-          body: JSON.stringify({
-            userID: currentUser._id,
-            mal_id: item.mal_id,
-            category: category,
-          }),
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      );
+      const res = await fetch("http://localhost:8080/users/favorites/remove", {
+        method: "DELETE",
+        body: JSON.stringify({
+          userID: currentUser._id,
+          mal_id: item.mal_id,
+          category: category,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
       const user = await res.json();
       if (res.status === 200) {
         localStorage.setItem("user", JSON.stringify(user));
@@ -126,7 +120,7 @@ export default function Card(props) {
           onMouseLeave={handleCardHover}
         >
           <img
-            src={anime.image_url}
+            src={anime.images.jpg.image_url}
             className="card-img-top rounded"
             alt="Anime"
           />
@@ -139,15 +133,10 @@ export default function Card(props) {
             )}{" "}
             <p className="card-text">
               Start:{" "}
-              {anime.start_date && anime.start_date.length > 20
-                ? anime.start_date.substring(0, 10)
-                : anime.start_date}
+              {anime.aired.from ? anime.aired.from.substring(0, 10) : "N/A"}
             </p>
             <p className="card-text">
-              End:{" "}
-              {anime.end_date && anime.end_date.length > 20
-                ? anime.end_date.substring(0, 10)
-                : anime.end_date}
+              End: {anime.aired.to ? anime.aired.to.substring(0, 10) : "N/A"}
             </p>
             <p className="card-text">Episodes: {anime.episodes}</p>
             <Link
@@ -188,7 +177,7 @@ export default function Card(props) {
           onMouseLeave={handleCardHover}
         >
           <img
-            src={manga.image_url}
+            src={manga.images.jpg.image_url}
             className="card-img-top rounded"
             alt="Manga"
           />
@@ -199,9 +188,12 @@ export default function Card(props) {
             ) : (
               <p></p>
             )}{" "}
-            <p className="card-text">Start: {manga.start_date}</p>
             <p className="card-text">
-              End: {manga.end_date ? manga.end_date : "N/A"}
+              Start: {manga.published.from.substring(0, 10)}
+            </p>
+            <p className="card-text">
+              End:{" "}
+              {manga.published.to ? manga.published.to.substring(0, 10) : "N/A"}
             </p>
             <p className="card-text">
               Volumes: {manga.volumes ? manga.volumes : "N/A"}
@@ -244,27 +236,20 @@ export default function Card(props) {
           onMouseLeave={handleCardHover}
         >
           <img
-            src={character.image_url}
+            src={character.images.jpg.image_url}
             className="card-img-top rounded"
             alt="char"
           />
           <div className="card-body mt-3">
-            <h5 className="card-title">
-              {character.title ? character.title : character.name}
-            </h5>
+            <h5 className="card-title">{character.name}</h5>
             <p className="card-text">{character.name_kanji}</p>
-            {character.rank ? (
-              <p className="card-text">Rank: {character.rank}</p>
-            ) : (
-              <p></p>
-            )}
             <Link
               to={{
                 pathname:
                   "/character-details/" +
                   character.mal_id +
                   "/" +
-                  character.title,
+                  character.name,
                 backURL: "/character-list",
               }}
             >

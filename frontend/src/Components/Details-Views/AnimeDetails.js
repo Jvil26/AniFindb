@@ -24,20 +24,17 @@ export default function AnimeDetails(props) {
 
   const addToFavorites = async (e, item, category) => {
     try {
-      const res = await fetch(
-        "https://anifindb.herokuapp.com/users/favorites/add",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            userID: currentUser._id,
-            item: item,
-            category: category,
-          }),
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      );
+      const res = await fetch("http://localhost:8080/users/favorites/add", {
+        method: "POST",
+        body: JSON.stringify({
+          userID: currentUser._id,
+          item: item,
+          category: category,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
       const user = await res.json();
       if (res.status === 200) {
         localStorage.setItem("user", JSON.stringify(user));
@@ -58,20 +55,17 @@ export default function AnimeDetails(props) {
   const removeFavorite = async (e, item, category) => {
     e.preventDefault();
     try {
-      const res = await fetch(
-        "https://anifindb.herokuapp.com/users/favorites/remove",
-        {
-          method: "DELETE",
-          body: JSON.stringify({
-            userID: currentUser._id,
-            mal_id: item.mal_id,
-            category: category,
-          }),
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      );
+      const res = await fetch("http://localhost:8080/users/favorites/remove", {
+        method: "DELETE",
+        body: JSON.stringify({
+          userID: currentUser._id,
+          mal_id: item.mal_id,
+          category: category,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
       const user = await res.json();
       if (res.status === 200) {
         localStorage.setItem("user", JSON.stringify(user));
@@ -94,17 +88,16 @@ export default function AnimeDetails(props) {
     });
     const { id } = props.match.params;
     try {
-      const res = await fetch(
-        `https://anifindb.herokuapp.com/api/anime-details/${id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-            "auth-token": props.userToken,
-          },
-        }
-      );
-      const anime = await res.json();
+      const res = await fetch(`http://localhost:8080/api/anime-details/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          "auth-token": props.userToken,
+        },
+      });
+      let anime = await res.json();
+      anime = anime.data;
+      console.log(anime);
       if (res.status !== 200) {
         setState({
           loading: false,
@@ -127,10 +120,8 @@ export default function AnimeDetails(props) {
           anime: anime,
           genres: genres.slice(0, -1),
           studios: studios.slice(0, -1),
-          favorite: currentUser.favorites.some((item) =>
-            item.mal_id === anime.mal_id && item.category === "anime"
-              ? true
-              : null
+          favorite: currentUser.favorites.some(
+            (item) => item.mal_id === anime.mal_id && item.category === "anime"
           ),
         });
       }
@@ -215,7 +206,7 @@ export default function AnimeDetails(props) {
                   <iframe
                     title="animeTrailer"
                     className="embed-responsive-item"
-                    src={anime.trailer_url}
+                    src={anime.trailer?.embed_url}
                     allowFullScreen
                   ></iframe>
                 </div>

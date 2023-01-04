@@ -36,7 +36,7 @@ export default function AnimeList(props) {
     genreIds = genreIds.slice(0, -1);
     try {
       const res = await fetch(
-        `https://anifindb.herokuapp.com/api/search?type=anime&genreIds=${genreIds}&page=${page}`,
+        `http://localhost:8080/api/search?type=anime&genreIds=${genreIds}&page=${page}`,
         {
           method: "GET",
           headers: {
@@ -76,7 +76,7 @@ export default function AnimeList(props) {
     });
     try {
       const res = await fetch(
-        `https://anifindb.herokuapp.com/api/anime-list/search?title=${searchVal}`,
+        `http://localhost:8080/api/anime-list/search?title=${searchVal}`,
         {
           method: "GET",
           headers: {
@@ -110,7 +110,7 @@ export default function AnimeList(props) {
       });
       let page = state.page;
       const res = await fetch(
-        `https://anifindb.herokuapp.com/api/anime-list?&page=${page}`,
+        `http://localhost:8080/api/anime-list?&page=${page}`,
         {
           method: "GET",
           headers: {
@@ -120,13 +120,14 @@ export default function AnimeList(props) {
         }
       );
       const animes = await res.json();
+      console.log(animes);
       if (res.status === 200) {
         setState({
           ...state,
-          filteredAnimes: [...state.filteredAnimes, ...animes.top],
+          filteredAnimes: [...state.filteredAnimes, ...animes.data],
           loading: false,
           page: state.page + 1,
-          hasMore: true,
+          hasMore: animes.has_next_page,
         });
       }
     } catch (err) {

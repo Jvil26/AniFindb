@@ -25,19 +25,16 @@ export default function ResetPassword() {
     });
     try {
       const resetEmail = localStorage.getItem("resetEmail");
-      const res = await fetch(
-        "https://anifindb.herokuapp.com/users/reset-password",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            newPassword: state.newPassword,
-            resetEmail: resetEmail,
-          }),
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      );
+      const res = await fetch("http://localhost:8080/users/reset-password", {
+        method: "POST",
+        body: JSON.stringify({
+          newPassword: state.newPassword,
+          resetEmail: resetEmail,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
       const data = await res.json();
       if (res.status === 200) {
         setState({

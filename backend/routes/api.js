@@ -18,7 +18,7 @@ router.get("/anime-list", authToken, async (req, res) => {
   const page = req.query.page;
   try {
     const animes = await fetch(
-      `https://api.jikan.moe/v3/top/anime/${page}/bypopularity`,
+      `https://api.jikan.moe/v4/top/anime?page=${page}&filter=bypopularity`,
       {
         method: "GET",
         headers: {
@@ -37,7 +37,7 @@ router.get("/anime-list/search", authToken, async (req, res) => {
   const animeTitle = req.query.title;
   try {
     const anime = await fetch(
-      `https://api.jikan.moe/v3/search/anime?q=${animeTitle}&page=1`,
+      `https://api.jikan.moe/v4/anime?q=${animeTitle}&page=1`,
       {
         method: "GET",
         headers: {
@@ -55,7 +55,7 @@ router.get("/anime-list/search", authToken, async (req, res) => {
 router.get("/anime-details/:id", authToken, async (req, res) => {
   const animeID = req.params.id;
   try {
-    const anime = await fetch(`https://api.jikan.moe/v3/anime/${animeID}//`, {
+    const anime = await fetch(`https://api.jikan.moe/v4/anime/${animeID}/`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -72,7 +72,7 @@ router.get("/manga-list", authToken, async (req, res) => {
   const page = req.query.page;
   try {
     const mangas = await fetch(
-      `https://api.jikan.moe/v3/top/manga/${page}/bypopularity`,
+      `https://api.jikan.moe/v4/top/manga?page=${page}&filter=bypopularity`,
       {
         method: "GET",
         headers: {
@@ -91,7 +91,7 @@ router.get("/manga-list/search", authToken, async (req, res) => {
   const mangaTitle = req.query.title;
   try {
     const manga = await fetch(
-      `https://api.jikan.moe/v3/search/manga?q=${mangaTitle}&page=1`,
+      `https://api.jikan.moe/v4/manga?q=${mangaTitle}&page=1`,
       {
         method: "GET",
         headers: {
@@ -109,7 +109,7 @@ router.get("/manga-list/search", authToken, async (req, res) => {
 router.get("/manga-details/:id", authToken, async (req, res) => {
   const mangaID = req.params.id;
   try {
-    const manga = await fetch(`https://api.jikan.moe/v3/manga/${mangaID}//`, {
+    const manga = await fetch(`https://api.jikan.moe/v4/manga/${mangaID}/`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -126,7 +126,7 @@ router.get("/character-list", authToken, async (req, res) => {
   const page = req.query.page;
   try {
     const characters = await fetch(
-      `https://api.jikan.moe/v3/top/characters/${page}`,
+      `https://api.jikan.moe/v4/top/characters?page=${page}&filter=bypopularity`,
       {
         method: "GET",
         headers: {
@@ -145,7 +145,7 @@ router.get("/character-list/search", authToken, async (req, res) => {
   const charTitle = req.query.title;
   try {
     const char = await fetch(
-      `https://api.jikan.moe/v3/search/character?q=${charTitle}&page=1`,
+      `https://api.jikan.moe/v4/characters?q=${charTitle}&page=1`,
       {
         method: "GET",
         headers: {
@@ -163,12 +163,15 @@ router.get("/character-list/search", authToken, async (req, res) => {
 router.get("/character-details/:id", authToken, async (req, res) => {
   const id = req.params.id;
   try {
-    const character = await fetch(`https://api.jikan.moe/v3/character/${id}/`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
+    const character = await fetch(
+      `https://api.jikan.moe/v4/characters/${id}/`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
     const parsedCharacter = await character.json();
     res.json(parsedCharacter);
   } catch (err) {
@@ -180,7 +183,7 @@ router.get("/search", authToken, async (req, res) => {
   const { type, genreIds, page } = req.query;
   try {
     const data = await fetch(
-      `https://api.jikan.moe/v3/search/${type}?q=&page=${page}&genre=${genreIds}&order_by=score`,
+      `https://api.jikan.moe/v4/${type}?q=&page=${page}&genres=${genreIds}&order_by=score`,
       {
         method: "GET",
         headers: {
