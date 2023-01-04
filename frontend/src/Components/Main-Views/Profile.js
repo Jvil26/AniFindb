@@ -39,17 +39,20 @@ export default function Profile() {
       loading: true,
     });
     try {
-      const res = await fetch("http://localhost:8080/users/profile/update", {
-        method: "POST",
-        body: JSON.stringify({
-          userID: currentUser._id,
-          newUsername: username,
-          dark_mode: currentUser.dark_mode,
-        }),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+      const res = await fetch(
+        "https://anifindb-api.onrender.com/users/profile/update",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            userID: currentUser._id,
+            newUsername: username,
+            dark_mode: currentUser.dark_mode,
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
       const data = await res.json();
       if (res.status === 200) {
         localStorage.setItem("user", JSON.stringify(data.savedUser));

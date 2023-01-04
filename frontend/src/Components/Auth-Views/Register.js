@@ -33,17 +33,20 @@ export default function Register({ setUserToken }) {
     });
     console.log(state);
     try {
-      const res = await fetch("http://localhost:8080/users/register", {
-        method: "POST",
-        body: JSON.stringify({
-          username: state.username,
-          password: state.password,
-          email: state.email,
-        }),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+      const res = await fetch(
+        "https://anifindb-api.onrender.com/users/register",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            username: state.username,
+            password: state.password,
+            email: state.email,
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
       const { status } = res;
       if (status === 200) {
         const data = await res.json();

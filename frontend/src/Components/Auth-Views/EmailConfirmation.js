@@ -27,7 +27,7 @@ export default function EmailConfirmation() {
     });
     try {
       const res = await fetch(
-        "http://localhost:8080/users/send-confirmation-email",
+        "https://anifindb-api.onrender.com/users/send-confirmation-email",
         {
           method: "POST",
           body: JSON.stringify({

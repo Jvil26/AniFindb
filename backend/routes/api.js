@@ -142,6 +142,7 @@ router.get("/character-list", authToken, async (req, res) => {
 });
 
 router.get("/character-list/search", authToken, async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
   const charTitle = req.query.title;
   try {
     const char = await fetch(

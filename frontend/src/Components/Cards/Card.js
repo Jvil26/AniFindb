@@ -29,17 +29,20 @@ export default function Card(props) {
 
   const addToFavorites = async (e, item, category) => {
     try {
-      const res = await fetch("http://localhost:8080/users/favorites/add", {
-        method: "POST",
-        body: JSON.stringify({
-          userID: currentUser._id,
-          item: item,
-          category: category,
-        }),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+      const res = await fetch(
+        "https://anifindb-api.onrender.com/users/favorites/add",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            userID: currentUser._id,
+            item: item,
+            category: category,
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
       const user = await res.json();
       if (res.status === 200) {
         localStorage.setItem("user", JSON.stringify(user));
@@ -59,17 +62,20 @@ export default function Card(props) {
 
   const removeFavorite = async (e, item, category) => {
     try {
-      const res = await fetch("http://localhost:8080/users/favorites/remove", {
-        method: "DELETE",
-        body: JSON.stringify({
-          userID: currentUser._id,
-          mal_id: item.mal_id,
-          category: category,
-        }),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+      const res = await fetch(
+        "https://anifindb-api.onrender.com/users/favorites/remove",
+        {
+          method: "DELETE",
+          body: JSON.stringify({
+            userID: currentUser._id,
+            mal_id: item.mal_id,
+            category: category,
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
       const user = await res.json();
       if (res.status === 200) {
         localStorage.setItem("user", JSON.stringify(user));

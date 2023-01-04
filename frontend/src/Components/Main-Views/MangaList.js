@@ -36,7 +36,7 @@ export default function MangaList(props) {
     genreIds = genreIds.slice(0, -1);
     try {
       const res = await fetch(
-        `http://localhost:8080/api/search?type=manga&genreIds=${genreIds}&page=${page}`,
+        `https://anifindb-api.onrender.com/api/search?type=manga&genreIds=${genreIds}&page=${page}`,
         {
           method: "GET",
           headers: {
@@ -76,7 +76,7 @@ export default function MangaList(props) {
     });
     try {
       const res = await fetch(
-        `http://localhost:8080/api/manga-list/search?title=${searchVal}`,
+        `https://anifindb-api.onrender.com/api/manga-list/search?title=${searchVal}`,
         {
           method: "GET",
           headers: {
@@ -111,7 +111,7 @@ export default function MangaList(props) {
     const page = state.page;
     try {
       const res = await fetch(
-        `http://localhost:8080/api/manga-list?&page=${page}`,
+        `https://anifindb-api.onrender.com/api/manga-list?&page=${page}`,
         {
           method: "GET",
           headers: {

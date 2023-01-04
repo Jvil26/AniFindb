@@ -29,7 +29,7 @@ export default function Login(props) {
     setState({
       loading: true,
     });
-    const res = await fetch("http://localhost:8080/users/login", {
+    const res = await fetch("https://anifindb-api.onrender.com/users/login", {
       method: "POST",
       body: JSON.stringify({
         username: state.username,
