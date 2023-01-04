@@ -97,6 +97,7 @@ export default function CharDetails(props) {
           headers: {
             "Content-type": "application/json",
             "auth-token": props.userToken,
+            "Access-Control-Allow-Origin": "*",
           },
         }
       );
