@@ -37,6 +37,7 @@ export default function Login(props) {
       }),
       headers: {
         "Content-type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
     });
     const data = await res.json();
