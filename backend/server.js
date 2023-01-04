@@ -12,7 +12,11 @@ const app = express();
 
 const PORT = process.env.PORT | 8080;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:8080", "https://anifindb-api.onrender.com"],
+  })
+);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
