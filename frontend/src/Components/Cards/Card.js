@@ -63,7 +63,7 @@ export default function Card(props) {
   const removeFavorite = async (e, item, category) => {
     try {
       const res = await fetch(
-        "${process.env.REACT_APP_SERVER_URL}/users/favorites/remove",
+        `${process.env.REACT_APP_SERVER_URL}/users/favorites/remove`,
         {
           method: "DELETE",
           body: JSON.stringify({

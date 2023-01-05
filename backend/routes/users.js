@@ -165,7 +165,7 @@ router.post("/favorites/add", async (req, res) => {
       length: item.episodes,
       mal_id: item.mal_id,
       priority: user.favorites.length + 1,
-      image_url: item.image_url,
+      image_url: item.images.jpg.image_url,
       name_kanji: item.name_kanji ? item.name_kanji : null,
     };
     user.favorites.push(obj);
