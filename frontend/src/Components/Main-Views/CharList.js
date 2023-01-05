@@ -29,7 +29,7 @@ export default function CharList(props) {
     });
     try {
       const res = await fetch(
-        `process.env.REACT_APP_SERVER_URL/api/character-list/search?title=${searchVal}`,
+        `${process.env.REACT_APP_SERVER_URL}/api/character-list/search?title=${searchVal}`,
         {
           method: "GET",
           headers: {
@@ -62,7 +62,7 @@ export default function CharList(props) {
     const page = state.page;
     try {
       const res = await fetch(
-        `process.env.REACT_APP_SERVER_URL/api/character-list?page=${page}`,
+        `${process.env.REACT_APP_SERVER_URL}/api/character-list?page=${page}`,
         {
           method: "GET",
           headers: {

@@ -25,7 +25,7 @@ export default function AnimeDetails(props) {
   const addToFavorites = async (e, item, category) => {
     try {
       const res = await fetch(
-        "process.env.REACT_APP_SERVER_URL/users/favorites/add",
+        "${process.env.REACT_APP_SERVER_URL}/users/favorites/add",
         {
           method: "POST",
           body: JSON.stringify({
@@ -59,7 +59,7 @@ export default function AnimeDetails(props) {
     e.preventDefault();
     try {
       const res = await fetch(
-        "process.env.REACT_APP_SERVER_URL/users/favorites/remove",
+        "${process.env.REACT_APP_SERVER_URL}/users/favorites/remove",
         {
           method: "DELETE",
           body: JSON.stringify({
@@ -95,7 +95,7 @@ export default function AnimeDetails(props) {
     const { id } = props.match.params;
     try {
       const res = await fetch(
-        `process.env.REACT_APP_SERVER_URL/api/anime-details/${id}`,
+        `${process.env.REACT_APP_SERVER_URL}/api/anime-details/${id}`,
         {
           method: "GET",
           headers: {
