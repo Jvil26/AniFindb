@@ -36,7 +36,7 @@ export default function AnimeList(props) {
     genreIds = genreIds.slice(0, -1);
     try {
       const res = await fetch(
-        `https://anifindb-api.onrender.com/api/search?type=anime&genreIds=${genreIds}&page=${page}`,
+        `process.env.REACT_APP_SERVER_URL/api/search?type=anime&genreIds=${genreIds}&page=${page}`,
         {
           method: "GET",
           headers: {
@@ -76,7 +76,7 @@ export default function AnimeList(props) {
     });
     try {
       const res = await fetch(
-        `https://anifindb-api.onrender.com/api/anime-list/search?title=${searchVal}`,
+        `process.env.REACT_APP_SERVER_URL/api/anime-list/search?title=${searchVal}`,
         {
           method: "GET",
           headers: {
@@ -110,7 +110,7 @@ export default function AnimeList(props) {
       });
       let page = state.page;
       const res = await fetch(
-        `https://anifindb-api.onrender.com/api/anime-list?&page=${page}`,
+        `process.env.REACT_APP_SERVER_URL/api/anime-list?&page=${page}`,
         {
           method: "GET",
           headers: {

@@ -34,7 +34,7 @@ export default function Register({ setUserToken }) {
     console.log(state);
     try {
       const res = await fetch(
-        "https://anifindb-api.onrender.com/users/register",
+        "process.env.REACT_APP_SERVER_URL/users/register",
         {
           method: "POST",
           body: JSON.stringify({

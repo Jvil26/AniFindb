@@ -40,7 +40,7 @@ export default function Profile() {
     });
     try {
       const res = await fetch(
-        "https://anifindb-api.onrender.com/users/profile/update",
+        "process.env.REACT_APP_SERVER_URL/users/profile/update",
         {
           method: "POST",
           body: JSON.stringify({

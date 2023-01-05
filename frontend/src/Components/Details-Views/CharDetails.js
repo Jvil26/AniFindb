@@ -22,7 +22,7 @@ export default function CharDetails(props) {
   const addToFavorites = async (e, item, category) => {
     try {
       const res = await fetch(
-        "https://anifindb-api.onrender.com/users/favorites/add",
+        "process.env.REACT_APP_SERVER_URL/users/favorites/add",
         {
           method: "POST",
           body: JSON.stringify({
@@ -56,7 +56,7 @@ export default function CharDetails(props) {
     e.preventDefault();
     try {
       const res = await fetch(
-        "https://anifindb-api.onrender.com/users/favorites/remove",
+        "process.env.REACT_APP_SERVER_URL/users/favorites/remove",
         {
           method: "DELETE",
           body: JSON.stringify({
@@ -91,13 +91,12 @@ export default function CharDetails(props) {
     const { id } = props.match.params;
     try {
       const res = await fetch(
-        `https://anifindb-api.onrender.com/api/character-details/${id}`,
+        `process.env.REACT_APP_SERVER_URL/api/character-details/${id}`,
         {
           method: "GET",
           headers: {
             "Content-type": "application/json",
             "auth-token": props.userToken,
-            "Access-Control-Allow-Origin": "*",
           },
         }
       );

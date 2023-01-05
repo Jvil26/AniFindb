@@ -29,7 +29,7 @@ export default function Login(props) {
     setState({
       loading: true,
     });
-    const res = await fetch("https://anifindb-api.onrender.com/users/login", {
+    const res = await fetch("process.env.REACT_APP_SERVER_URL/users/login", {
       method: "POST",
       body: JSON.stringify({
         username: state.username,
@@ -37,7 +37,6 @@ export default function Login(props) {
       }),
       headers: {
         "Content-type": "application/json",
-        "Access-Control-Allow-Origin": "*",
       },
     });
     const data = await res.json();

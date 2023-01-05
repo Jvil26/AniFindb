@@ -26,7 +26,7 @@ export default function ResetPassword() {
     try {
       const resetEmail = localStorage.getItem("resetEmail");
       const res = await fetch(
-        "https://anifindb-api.onrender.com/users/reset-password",
+        "process.env.REACT_APP_SERVER_URL/users/reset-password",
         {
           method: "POST",
           body: JSON.stringify({
