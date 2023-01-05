@@ -30,7 +30,7 @@ export default function Card(props) {
   const addToFavorites = async (e, item, category) => {
     try {
       const res = await fetch(
-        "${process.env.REACT_APP_SERVER_URL}/users/favorites/add",
+        `${process.env.REACT_APP_SERVER_URL}/users/favorites/add`,
         {
           method: "POST",
           body: JSON.stringify({

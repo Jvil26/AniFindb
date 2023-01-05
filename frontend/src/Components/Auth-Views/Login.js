@@ -29,7 +29,7 @@ export default function Login(props) {
     setState({
       loading: true,
     });
-    const res = await fetch("${process.env.REACT_APP_SERVER_URL}/users/login", {
+    const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/users/login`, {
       method: "POST",
       body: JSON.stringify({
         username: state.username,
