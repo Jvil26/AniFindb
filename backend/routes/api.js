@@ -123,7 +123,6 @@ router.get("/manga-details/:id", authToken, async (req, res) => {
 });
 
 router.get("/character-list", authToken, async (req, res) => {
-  res.set("Access-Control-Allow-Origin", "*");
   const page = req.query.page;
   try {
     const characters = await fetch(

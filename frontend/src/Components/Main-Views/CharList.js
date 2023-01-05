@@ -42,7 +42,7 @@ export default function CharList(props) {
       if (res.status === 200) {
         setState({
           ...state,
-          filteredChars: [...data.results],
+          filteredChars: [...data.data],
           loading: false,
         });
       }

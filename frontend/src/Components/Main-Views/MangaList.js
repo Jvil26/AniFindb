@@ -49,7 +49,7 @@ export default function MangaList(props) {
       if (res.status === 200) {
         setState({
           ...state,
-          filteredMangas: [...data.results],
+          filteredMangas: [...data.data],
           loading: false,
           page: state.page + 1,
         });
@@ -89,7 +89,7 @@ export default function MangaList(props) {
       if (res.status === 200) {
         setState({
           ...state,
-          filteredMangas: [...data.results],
+          filteredMangas: [...data.data],
           loading: false,
           hasMore: true,
         });

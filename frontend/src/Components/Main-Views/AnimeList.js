@@ -49,7 +49,7 @@ export default function AnimeList(props) {
       if (res.status === 200) {
         setState({
           ...state,
-          filteredAnimes: [...data.results],
+          filteredAnimes: [...data.data],
           loading: false,
           page: state.page + 1,
         });
@@ -89,7 +89,7 @@ export default function AnimeList(props) {
       if (res.status === 200) {
         setState({
           ...state,
-          filteredAnimes: [...data.results],
+          filteredAnimes: [...data.data],
           loading: false,
         });
       }
