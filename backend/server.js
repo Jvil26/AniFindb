@@ -14,7 +14,7 @@ const PORT = process.env.PORT | 8080;
 
 app.use(
   cors({
-    origin: ["http://localhost:3001", "https://anifindb.netlify.app/"],
+    origin: ["http://localhost:3001", "https://anifindb.onrender.com"],
   })
 );
 app.use(express.urlencoded({ extended: true }));
